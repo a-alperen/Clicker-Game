@@ -11,35 +11,26 @@ public class Click : MonoBehaviour
     private float width;
     private float height;
 
-    private float count = 0;
+    private Data data;
 
     [SerializeField] private TextMeshProUGUI clickText;
-
-
-    void Awake()
-    {
-        width = (float)Screen.width / 2.0f;
-        height = (float)Screen.height / 2.0f;
-
-        // Position used for the cube.
-        position = new Vector3(0.0f, 0.0f, 0.0f);
-    }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        data = new Data();
     }
 
     // Update is called once per frame
     void Update()
     {
-        #if UNITY_EDITOR
-            ComputerClick();
-        #else
-            PhoneClick();
-        #endif
+        
+#if UNITY_EDITOR
+        ComputerClick();
+#else
+        PhoneClick();
+#endif
     }
 
     private void PhoneClick()
@@ -48,10 +39,10 @@ public class Click : MonoBehaviour
         {
             Touch touch = Input.GetTouch(0);
 
-            if (touch.phase == TouchPhase.Began)
+            if (touch.phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject())
             {
-                count += 1;
-                clickText.text = count.ToString();
+                data.Food += 1;
+                clickText.text = data.Food.ToString();
             }
         }
     }
@@ -59,10 +50,10 @@ public class Click : MonoBehaviour
     private void ComputerClick()
     {
         
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
-            count += 1;
-            clickText.text = count.ToString();
+            data.Food += 1;
+            clickText.text = data.Food.ToString();
         }
     }
 
