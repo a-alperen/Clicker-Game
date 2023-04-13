@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: c3a3fcb9b6859bd4e95adadd4157cca6
+guid: 83fe87ffd13d134479e2368d29dbc6c4
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -117,13 +117,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PanelOpenCloseArrows_3_0
+      name: PanelOpenCloseArrows_4_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 128
-        width: 96
-        height: 128
+        y: 160
+        width: 128
+        height: 160
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -131,20 +131,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 46cbd142c9724c24f943e92f00216ad7
-      internalID: 1491235979
+      spriteID: f00df873a22fa9149b3c9379886d7f21
+      internalID: -1752153612
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PanelOpenCloseArrows_3_1
+      name: PanelOpenCloseArrows_4_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 96
-        height: 128
+        x: 128
+        y: 160
+        width: 128
+        height: 160
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -152,8 +152,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2e305376f20922849b08f8f36013d7f5
-      internalID: 660051022
+      spriteID: 15593cf3430dcb94c8eceb10819a4fd1
+      internalID: -1895125411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PanelOpenCloseArrows_4_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 128
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9274834c9cade04489b82db3be855bdc
+      internalID: -1068316337
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PanelOpenCloseArrows_4_3
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 128
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12ad5cdffdb7d414fa78bcd7b5f083b1
+      internalID: -673334662
       vertices: []
       indices: 
       edges: []
@@ -169,8 +211,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      PanelOpenCloseArrows_3_1: 660051022
-      PanelOpenCloseArrows_3_0: 1491235979
+      PanelOpenCloseArrows_4_2: -1068316337
+      PanelOpenCloseArrows_4_1: -1895125411
+      PanelOpenCloseArrows_4_3: -673334662
+      PanelOpenCloseArrows_4_0: -1752153612
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
+using BreakInfinity;
 
 public class Click : MonoBehaviour
 {
@@ -11,7 +12,8 @@ public class Click : MonoBehaviour
     private float width;
     private float height;
 
-    private Data data;
+    public Data data;
+    public UpgradesManager upgradesManager;
 
     [SerializeField] private TextMeshProUGUI clickText;
 
@@ -20,12 +22,15 @@ public class Click : MonoBehaviour
     void Start()
     {
         data = new Data();
+        upgradesManager.StartUpgradeManager();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+        clickText.text = data.Food.ToString("F2");
+
 #if UNITY_EDITOR
         ComputerClick();
 #else
@@ -41,8 +46,8 @@ public class Click : MonoBehaviour
 
             if (touch.phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject())
             {
-                data.Food += 1;
-                clickText.text = data.Food.ToString();
+                data.Food += ClickPower();
+                clickText.text = data.Food.ToString("F2");
             }
         }
     }
@@ -52,10 +57,10 @@ public class Click : MonoBehaviour
         
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
-            data.Food += 1;
-            clickText.text = data.Food.ToString();
+            data.Food += ClickPower();
+            clickText.text = data.Food.ToString("F2");
         }
     }
 
-    
+    public BigDouble ClickPower() => 1 + data.ClickUpgradeLevel;
 }
