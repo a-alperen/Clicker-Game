@@ -5,12 +5,18 @@ using UnityEngine;
 
 public class UpgradesManager : MonoBehaviour
 {
-    public Click click;
+    
+    public static UpgradesManager Instance { get; private set; }
 
     public Upgrades clickUpgrade;
 
     public BigDouble clickUpgradeBaseCost;
     public BigDouble clickUpgradeCostMultiplier;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     public void StartUpgradeManager()
     {
@@ -22,20 +28,20 @@ public class UpgradesManager : MonoBehaviour
     }
 
 
-    public BigDouble Cost() => clickUpgradeBaseCost * BigDouble.Pow(clickUpgradeCostMultiplier, click.data.ClickUpgradeLevel);
+    public BigDouble Cost() => clickUpgradeBaseCost * BigDouble.Pow(clickUpgradeCostMultiplier, Controller.Instance.data.ClickUpgradeLevel);
 
     public void UpdateUpgradeUI()
     {
-        clickUpgrade.levelText.text = "Seviye:" + click.data.ClickUpgradeLevel.ToString();
+        clickUpgrade.levelText.text = "Seviye:" + Controller.Instance.data.ClickUpgradeLevel.ToString();
         clickUpgrade.costText.text = "Maliyet:" + Cost().ToString("F2");
     }
 
     public void BuyUpgrade()
     {
-        if(click.data.Food >= Cost())
+        if(Controller.Instance.data.Food >= Cost())
         {
-            click.data.Food -= Cost();
-            click.data.ClickUpgradeLevel += 1;
+            Controller.Instance.data.Food -= Cost();
+            Controller.Instance.data.ClickUpgradeLevel += 1;
         }
         UpdateUpgradeUI();
     }
