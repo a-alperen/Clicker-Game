@@ -6,28 +6,34 @@ using BreakInfinity;
 public class Data
 {
     private BigDouble food;
-    private BigDouble herb;
+    private BigDouble gold;
+    private BigDouble machine;
+    private BigDouble chip;
 
-    private BigDouble clickUpgradeLevel;
-
-    private List<BigDouble> upgradeLevels;
+    private List<int> upgradeLevels;
 
     public BigDouble Food
     {
         get { return food; }
         set { food = value; }
     }
-    public BigDouble Herb
+    public BigDouble Gold
     {
-        get { return herb; }
-        set { herb = value; }
+        get { return  gold; }
+        set { gold = value; }
     }
-    public BigDouble ClickUpgradeLevel
+    public BigDouble Machine
     {
-        get { return clickUpgradeLevel; }
-        set { clickUpgradeLevel = value; }
+        get { return machine; }
+        set { machine = value; }
     }
-    public List<BigDouble> UpgradeLevels
+    public BigDouble Chip
+    {
+        get { return chip; }
+        set { chip = value; }
+    }
+
+    public List<int> UpgradeLevels
     {
         get { return upgradeLevels; }
         set { upgradeLevels = value; }
@@ -35,9 +41,11 @@ public class Data
     public Data()
     {
         food = 0;
-        herb = 0;
+        gold = 0;
+        machine = 0;
+        chip = 0;
 
-        upgradeLevels = Methods.CreateList<BigDouble>(10);
+        upgradeLevels = new int[12].ToList();
 
     }
 

@@ -6,8 +6,12 @@ using TMPro;
 
 public class Upgrades : MonoBehaviour
 {
+    public int upgradeId;
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI costText;
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI productionText;
+
+
+    public void BuyClickUpgrade() => UpgradesManager.Instance.BuyUpgrade(upgradeId);
 }

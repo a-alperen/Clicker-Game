@@ -38,6 +38,15 @@ public class Controller : MonoBehaviour
 #endif
     }
 
+    public BigDouble ClickPower()
+    {
+        BigDouble total = 1;
+        for (int i = 0; i < data.UpgradeLevels.Count; i++)
+            total += UpgradesManager.Instance.clickUpgradesBasePower[i] * data.UpgradeLevels[i];
+        
+        return total;
+    }
+
     private void PhoneClick()
     {
         if (Input.touchCount > 0)
@@ -62,8 +71,5 @@ public class Controller : MonoBehaviour
             
         }
     }
-
-    public BigDouble ClickPower() => 1 + data.ClickUpgradeLevel;
-
 
 }
