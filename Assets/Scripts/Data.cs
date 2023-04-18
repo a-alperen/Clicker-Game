@@ -10,7 +10,8 @@ public class Data
     private BigDouble machine;
     private BigDouble chip;
 
-    private List<int> upgradeLevels;
+    private List<int> clickUpgradeLevels;
+    private List<int> productionUpgradeLevels;
 
     public BigDouble Food
     {
@@ -33,11 +34,17 @@ public class Data
         set { chip = value; }
     }
 
-    public List<int> UpgradeLevels
+    public List<int> ClickUpgradeLevels
     {
-        get { return upgradeLevels; }
-        set { upgradeLevels = value; }
+        get { return clickUpgradeLevels; }
+        set { clickUpgradeLevels = value; }
     }
+    public List<int> ProductionUpgradeLevels
+    {
+        get { return productionUpgradeLevels; }
+        set { productionUpgradeLevels = value; }
+    }
+
     public Data()
     {
         food = 0;
@@ -45,7 +52,7 @@ public class Data
         machine = 0;
         chip = 0;
 
-        upgradeLevels = new int[12].ToList();
+        clickUpgradeLevels = new int[12].ToList();
 
     }
 

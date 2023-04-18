@@ -41,8 +41,8 @@ public class Controller : MonoBehaviour
     public BigDouble ClickPower()
     {
         BigDouble total = 1;
-        for (int i = 0; i < data.UpgradeLevels.Count; i++)
-            total += UpgradesManager.Instance.clickUpgradesBasePower[i] * data.UpgradeLevels[i];
+        for (int i = 0; i < data.ClickUpgradeLevels.Count; i++)
+            total += UpgradesManager.Instance.clickUpgradesBasePower[i] * data.ClickUpgradeLevels[i];
         
         return total;
     }

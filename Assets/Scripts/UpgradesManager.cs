@@ -28,7 +28,7 @@ public class UpgradesManager : MonoBehaviour
 
     public void StartUpgradeManager()
     {
-        Methods.CheckList( Controller.Instance.data.UpgradeLevels, 12 );
+        Methods.CheckList( Controller.Instance.data.ClickUpgradeLevels, 12 );
 
         clickUpgradesNames = new[] { "Sopa", "Sapan", "Mızrak", "Ok ve Yay", "Balta", "Tuzaklar",
                                      "Çapa Aleti", "Tırmık", "Saban ve Boyunduruk", "Orak", "Düven", "Tırpan"};
@@ -39,7 +39,7 @@ public class UpgradesManager : MonoBehaviour
         clickUpgradesBasePower = new BigDouble[] { 1, 3, 10, 25, 75, 150,
                                                    250, 750, 2000, 5000, 15000, 25000 };
 
-        for (int i = 0; i < Controller.Instance.data.UpgradeLevels.Count; i++)
+        for (int i = 0; i < Controller.Instance.data.ClickUpgradeLevels.Count; i++)
         {
             Upgrades upgrade = Instantiate(clickUpgradePrefab, clickUpgradesPanel.transform);
             upgrade.upgradeId = i;
@@ -52,7 +52,7 @@ public class UpgradesManager : MonoBehaviour
     }
 
     public BigDouble ClickUpgradeCost(int upgradeId) => clickUpgradesBaseCost[upgradeId]
-                                                       * BigDouble.Pow(clickUpgradesCostMultiplier[upgradeId], Controller.Instance.data.UpgradeLevels[upgradeId]);
+                                                       * BigDouble.Pow(clickUpgradesCostMultiplier[upgradeId], Controller.Instance.data.ClickUpgradeLevels[upgradeId]);
 
     public void UpdateUpgradeUI(int upgradeId = -1)
     {
@@ -61,10 +61,10 @@ public class UpgradesManager : MonoBehaviour
         
         void UpdateUI(int id)
         {
-            clickUpgrades[id].levelText.text = "Seviye:" + Controller.Instance.data.UpgradeLevels[id].ToString();
-            clickUpgrades[id].costText.text = $"Maliyet: {ClickUpgradeCost(id):F2} Food";
+            clickUpgrades[id].levelText.text = "seviye: " + Controller.Instance.data.ClickUpgradeLevels[id].ToString();
+            clickUpgrades[id].costText.text = $"{ClickUpgradeCost(id):F2} \nyiyecek";
             clickUpgrades[id].nameText.text = clickUpgradesNames[id];
-            clickUpgrades[id].productionText.text = $"Üretim: {clickUpgradesBasePower[id] * Controller.Instance.data.UpgradeLevels[id]} Food";
+            clickUpgrades[id].productionText.text = $"tıklama başına \n+{clickUpgradesBasePower[id]} yiyecek";
         }
     }
 
@@ -73,7 +73,7 @@ public class UpgradesManager : MonoBehaviour
         if(Controller.Instance.data.Food >= ClickUpgradeCost(upgradeId))
         {
             Controller.Instance.data.Food -= ClickUpgradeCost(upgradeId);
-            Controller.Instance.data.UpgradeLevels[upgradeId] += 1;
+            Controller.Instance.data.ClickUpgradeLevels[upgradeId] += 1;
         }
         UpdateUpgradeUI(upgradeId);
     }
