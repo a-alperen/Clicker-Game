@@ -53,7 +53,7 @@ public class Data
         chip = 0;
 
         clickUpgradeLevels = new int[12].ToList();
-
+        productionUpgradeLevels = new int[8].ToList();
     }
 
 }

@@ -11,6 +11,7 @@ public class Controller : MonoBehaviour
     public Data data;
     
     [SerializeField] private TextMeshProUGUI clickText;
+    [SerializeField] private TextMeshProUGUI productionText;
 
     private void Awake()
     {
@@ -27,8 +28,9 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        clickText.text = data.Food.ToString("F2");
+        productionText.text = $"{ProductionPerSecond():F2}/s";
+        clickText.text = $"{data.Food:F2} Yiyecek";
+        data.Food += ProductionPerSecond() * Time.deltaTime;
 
 #if UNITY_EDITOR
         ComputerClick();
@@ -44,6 +46,14 @@ public class Controller : MonoBehaviour
         for (int i = 0; i < data.ClickUpgradeLevels.Count; i++)
             total += UpgradesManager.Instance.clickUpgradesBasePower[i] * data.ClickUpgradeLevels[i];
         
+        return total;
+    }
+    public BigDouble ProductionPerSecond()
+    {
+        BigDouble total = 0;
+        for (int i = 0; i < data.ProductionUpgradeLevels.Count; i++)
+            total += UpgradesManager.Instance.productionUpgradesBasePower[i] * data.ProductionUpgradeLevels[i];
+
         return total;
     }
 

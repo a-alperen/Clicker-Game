@@ -13,5 +13,6 @@ public class Upgrades : MonoBehaviour
     public TextMeshProUGUI productionText;
 
 
-    public void BuyClickUpgrade() => UpgradesManager.Instance.BuyUpgrade(upgradeId);
+    public void BuyClickUpgrade() => UpgradesManager.Instance.BuyUpgrade("Click",upgradeId);
+    public void BuyProductionUpgrade() => UpgradesManager.Instance.BuyUpgrade("Production", upgradeId);
 }
