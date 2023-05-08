@@ -8,11 +8,14 @@ public class Controller : MonoBehaviour
 
     public static Controller Instance { get; private set; }
 
+    private const string dataFileName = "PlayerData";
+
     public Data data;
-    
+
     [SerializeField] private TextMeshProUGUI clickText;
     [SerializeField] private TextMeshProUGUI productionText;
 
+    public AudioSource clickSound;
     private void Awake()
     {
         Instance = this;
@@ -21,38 +24,51 @@ public class Controller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        data = new Data();
+        data = SaveSystem.SaveExists(dataFileName)
+               ? SaveSystem.LoadData<Data>(dataFileName)
+               : new Data();
+
         UpgradesManager.Instance.StartUpgradeManager();
     }
+
+    public float SaveTime;
 
     // Update is called once per frame
     void Update()
     {
-        productionText.text = $"{ProductionPerSecond():F2}/s";
-        clickText.text = $"{data.Food:F2} Yiyecek";
-        data.Food += ProductionPerSecond() * Time.deltaTime;
-
 #if UNITY_EDITOR
         ComputerClick();
 #else
         PhoneClick();
         
 #endif
+
+        productionText.text = $"{ProductionPerSecond():F2}/s";
+        clickText.text = $"{data.Food:F2} Yiyecek";
+        data.Food += ProductionPerSecond() * Time.deltaTime;
+
+        SaveTime += Time.deltaTime * (1 / Time.timeScale);
+
+        if(SaveTime >= 15)
+        {
+            SaveSystem.SaveData(data, dataFileName);
+            SaveTime = 0;
+        }
     }
 
     public BigDouble ClickPower()
     {
         BigDouble total = 1;
         for (int i = 0; i < data.ClickUpgradeLevels.Count; i++)
-            total += UpgradesManager.Instance.clickUpgradesBasePower[i] * data.ClickUpgradeLevels[i];
+            total += UpgradesManager.Instance.upgradeHandlers[0].UpgradesBasePower[i] * data.ClickUpgradeLevels[i];
         
         return total;
     }
     public BigDouble ProductionPerSecond()
     {
         BigDouble total = 0;
-        for (int i = 0; i < data.ProductionUpgradeLevels.Count; i++)
-            total += UpgradesManager.Instance.productionUpgradesBasePower[i] * data.ProductionUpgradeLevels[i];
+        for (int i = 0; i < data.FirstAgeProductionUpgradeLevels.Count; i++)
+            total += UpgradesManager.Instance.upgradeHandlers[1].UpgradesBasePower[i] * data.FirstAgeProductionUpgradeLevels[i];
 
         return total;
     }
@@ -67,6 +83,7 @@ public class Controller : MonoBehaviour
             {
                 data.Food += ClickPower();
                 clickText.text = data.Food.ToString("F2");
+                clickSound.Play();
             }
         }
     }
@@ -78,7 +95,7 @@ public class Controller : MonoBehaviour
         {
             data.Food += ClickPower();
             clickText.text = data.Food.ToString("F2");
-            
+            clickSound.Play();
         }
     }
 

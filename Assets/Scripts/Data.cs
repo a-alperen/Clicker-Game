@@ -2,7 +2,9 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using BreakInfinity;
+using System;
 
+[Serializable]
 public class Data
 {
     private BigDouble food;
@@ -11,7 +13,10 @@ public class Data
     private BigDouble chip;
 
     private List<int> clickUpgradeLevels;
-    private List<int> productionUpgradeLevels;
+    private List<int> firstAgeProductionUpgradeLevels;
+    private List<int> secondAgeProductionUpgradeLevels;
+    private List<int> thirdAgeProductionUpgradeLevels;
+    private List<int> fourthAgeProductionUpgradeLevels;
 
     public BigDouble Food
     {
@@ -39,12 +44,26 @@ public class Data
         get { return clickUpgradeLevels; }
         set { clickUpgradeLevels = value; }
     }
-    public List<int> ProductionUpgradeLevels
+    public List<int> FirstAgeProductionUpgradeLevels
     {
-        get { return productionUpgradeLevels; }
-        set { productionUpgradeLevels = value; }
+        get { return firstAgeProductionUpgradeLevels; }
+        set { firstAgeProductionUpgradeLevels = value; }
     }
-
+    public List<int> SecondAgeProductionUpgradeLevels
+    {
+        get { return secondAgeProductionUpgradeLevels; }
+        set { secondAgeProductionUpgradeLevels = value; }
+    }
+    public List<int> ThirdAgeProductionUpgradeLevels
+    {
+        get { return thirdAgeProductionUpgradeLevels; }
+        set { thirdAgeProductionUpgradeLevels = value; }
+    }
+    public List<int> FourthAgeProductionUpgradeLevels
+    {
+        get { return fourthAgeProductionUpgradeLevels; }
+        set { fourthAgeProductionUpgradeLevels = value; }
+    }
     public Data()
     {
         food = 0;
@@ -53,7 +72,7 @@ public class Data
         chip = 0;
 
         clickUpgradeLevels = new int[12].ToList();
-        productionUpgradeLevels = new int[8].ToList();
+        firstAgeProductionUpgradeLevels = new int[8].ToList();
     }
 
 }

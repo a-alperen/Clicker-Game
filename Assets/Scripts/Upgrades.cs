@@ -14,5 +14,9 @@ public class Upgrades : MonoBehaviour
 
 
     public void BuyClickUpgrade() => UpgradesManager.Instance.BuyUpgrade("Click",upgradeId);
-    public void BuyProductionUpgrade() => UpgradesManager.Instance.BuyUpgrade("Production", upgradeId);
+    public void BuyFirstAgeUpgrade() => UpgradesManager.Instance.BuyUpgrade("FirstAge", upgradeId);
+    public void BuySecondAgeUpgrade() => UpgradesManager.Instance.BuyUpgrade("SecondAge", upgradeId);
+    public void BuyThirdAgeUpgrade() => UpgradesManager.Instance.BuyUpgrade("ThirdAge", upgradeId);
+    public void BuyFourthAgeUpgrade() => UpgradesManager.Instance.BuyUpgrade("FourthAge", upgradeId);
+
 }
