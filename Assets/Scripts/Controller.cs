@@ -14,6 +14,7 @@ public class Controller : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI clickText;
     [SerializeField] private TextMeshProUGUI productionText;
+    public GameObject clickTextPrefab;
 
     public AudioSource clickSound;
     private void Awake()
@@ -29,6 +30,7 @@ public class Controller : MonoBehaviour
                : new Data();
 
         UpgradesManager.Instance.StartUpgradeManager();
+        Settings.Instance.StartSettings();
     }
 
     public float SaveTime;
@@ -44,7 +46,7 @@ public class Controller : MonoBehaviour
 #endif
 
         productionText.text = $"{ProductionPerSecond():F2}/s";
-        clickText.text = $"{data.Food:F2} Yiyecek";
+        clickText.text = $"{data.Food.Notate()} Yiyecek";
         data.Food += ProductionPerSecond() * Time.deltaTime;
 
         SaveTime += Time.deltaTime * (1 / Time.timeScale);
@@ -62,7 +64,7 @@ public class Controller : MonoBehaviour
         for (int i = 0; i < data.ClickUpgradeLevels.Count; i++)
             total += UpgradesManager.Instance.upgradeHandlers[0].UpgradesBasePower[i] * data.ClickUpgradeLevels[i];
         
-        return total;
+        return total * PrestigeManager.Instance.PrestigeEffect();
     }
     public BigDouble ProductionPerSecond()
     {
@@ -70,7 +72,7 @@ public class Controller : MonoBehaviour
         for (int i = 0; i < data.FirstAgeProductionUpgradeLevels.Count; i++)
             total += UpgradesManager.Instance.upgradeHandlers[1].UpgradesBasePower[i] * data.FirstAgeProductionUpgradeLevels[i];
 
-        return total;
+        return total * PrestigeManager.Instance.PrestigeEffect();
     }
 
     private void PhoneClick()
@@ -93,6 +95,10 @@ public class Controller : MonoBehaviour
         
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
+            //Vector3 mousePos = Input.mousePosition;
+            //Vector3 objPos= Camera.main.ScreenToWorldPoint(mousePos);
+            //GameObject go = Instantiate(clickTextPrefab, objPos, Quaternion.identity);
+            //go.transform.position = mousePos;
             data.Food += ClickPower();
             clickText.text = data.Food.ToString("F2");
             clickSound.Play();

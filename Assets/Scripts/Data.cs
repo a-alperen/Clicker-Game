@@ -7,72 +7,32 @@ using System;
 [Serializable]
 public class Data
 {
-    private BigDouble food;
-    private BigDouble gold;
-    private BigDouble machine;
-    private BigDouble chip;
+    public BigDouble Diamond;
+    public BigDouble Food;
+    public BigDouble Gold;
+    public BigDouble Machine;
+    public BigDouble Chip;
 
-    private List<int> clickUpgradeLevels;
-    private List<int> firstAgeProductionUpgradeLevels;
-    private List<int> secondAgeProductionUpgradeLevels;
-    private List<int> thirdAgeProductionUpgradeLevels;
-    private List<int> fourthAgeProductionUpgradeLevels;
+    public List<int> ClickUpgradeLevels;
+    public List<int> FirstAgeProductionUpgradeLevels;
+    public List<int> SecondAgeProductionUpgradeLevels;
+    public List<int> ThirdAgeProductionUpgradeLevels;
+    public List<int> FourthAgeProductionUpgradeLevels;
 
-    public BigDouble Food
-    {
-        get { return food; }
-        set { food = value; }
-    }
-    public BigDouble Gold
-    {
-        get { return  gold; }
-        set { gold = value; }
-    }
-    public BigDouble Machine
-    {
-        get { return machine; }
-        set { machine = value; }
-    }
-    public BigDouble Chip
-    {
-        get { return chip; }
-        set { chip = value; }
-    }
-
-    public List<int> ClickUpgradeLevels
-    {
-        get { return clickUpgradeLevels; }
-        set { clickUpgradeLevels = value; }
-    }
-    public List<int> FirstAgeProductionUpgradeLevels
-    {
-        get { return firstAgeProductionUpgradeLevels; }
-        set { firstAgeProductionUpgradeLevels = value; }
-    }
-    public List<int> SecondAgeProductionUpgradeLevels
-    {
-        get { return secondAgeProductionUpgradeLevels; }
-        set { secondAgeProductionUpgradeLevels = value; }
-    }
-    public List<int> ThirdAgeProductionUpgradeLevels
-    {
-        get { return thirdAgeProductionUpgradeLevels; }
-        set { thirdAgeProductionUpgradeLevels = value; }
-    }
-    public List<int> FourthAgeProductionUpgradeLevels
-    {
-        get { return fourthAgeProductionUpgradeLevels; }
-        set { fourthAgeProductionUpgradeLevels = value; }
-    }
+    public int notation;
+    
     public Data()
     {
-        food = 0;
-        gold = 0;
-        machine = 0;
-        chip = 0;
+        Diamond = 0;
+        Food = 0;
+        Gold = 0;
+        Machine = 0;
+        Chip = 0;
 
-        clickUpgradeLevels = new int[12].ToList();
-        firstAgeProductionUpgradeLevels = new int[8].ToList();
+        ClickUpgradeLevels = new int[12].ToList();
+        FirstAgeProductionUpgradeLevels = new int[8].ToList();
+
+        notation = 0;
     }
 
 }

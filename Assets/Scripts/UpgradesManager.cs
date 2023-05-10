@@ -57,11 +57,35 @@ public class UpgradesManager : MonoBehaviour
         //upgradeHandlers[3].UpgradesCostMultiplier = new BigDouble[] { };
         //upgradeHandlers[4].UpgradesCostMultiplier = new BigDouble[] { };
         // Base power of Upgrades
-        upgradeHandlers[0].UpgradesBasePower = new BigDouble[] { 1, 3, 10, 25, 75, 150,250, 750, 2000, 5000, 15000, 25000 };
-        upgradeHandlers[1].UpgradesBasePower = new BigDouble[] { 1, 3, 15, 50, 150, 500, 1000, 2000 };
-        //upgradeHandlers[2].UpgradesBasePower = new BigDouble[] { };
-        //upgradeHandlers[3].UpgradesBasePower = new BigDouble[] { };
-        //upgradeHandlers[4].UpgradesBasePower = new BigDouble[] { };
+        upgradeHandlers[0].UpgradesBasePower = new BigDouble[] 
+        { 
+            1 * PrestigeManager.Instance.PrestigeEffect(),
+            3 * PrestigeManager.Instance.PrestigeEffect(),
+            10 * PrestigeManager.Instance.PrestigeEffect(),
+            25 * PrestigeManager.Instance.PrestigeEffect(),
+            75 * PrestigeManager.Instance.PrestigeEffect(),
+            150 * PrestigeManager.Instance.PrestigeEffect(),
+            250 * PrestigeManager.Instance.PrestigeEffect(),
+            750 * PrestigeManager.Instance.PrestigeEffect(),
+            2000 * PrestigeManager.Instance.PrestigeEffect(),
+            5000 * PrestigeManager.Instance.PrestigeEffect(),
+            15000 * PrestigeManager.Instance.PrestigeEffect(),
+            25000 * PrestigeManager.Instance.PrestigeEffect()
+        };
+        upgradeHandlers[1].UpgradesBasePower = new BigDouble[] 
+        {
+            1 * PrestigeManager.Instance.PrestigeEffect(),
+            3 * PrestigeManager.Instance.PrestigeEffect(),
+            15 * PrestigeManager.Instance.PrestigeEffect(),
+            50 * PrestigeManager.Instance.PrestigeEffect(),
+            150 * PrestigeManager.Instance.PrestigeEffect(),
+            500 * PrestigeManager.Instance.PrestigeEffect(),
+            1000 * PrestigeManager.Instance.PrestigeEffect(),
+            2000 * PrestigeManager.Instance.PrestigeEffect()
+        };
+        //upgradeHandlers[2].UpgradesBasePower = new BigDouble[] { 0 };
+        //upgradeHandlers[3].UpgradesBasePower = new BigDouble[] { 0 };
+        //upgradeHandlers[4].UpgradesBasePower = new BigDouble[] { 0 };
         // Upgrades unlock amount
         upgradeHandlers[0].UpgradesUnlock = new BigDouble[] { 0, 50, 250, 1250, 5000, 12500, 50000, 125000, 500000, 2500000, 12500000, 25000000 };
         upgradeHandlers[1].UpgradesUnlock = new BigDouble[] { 0, 50, 500, 3750, 10000, 25000, 50000, 250000 };
@@ -74,6 +98,7 @@ public class UpgradesManager : MonoBehaviour
         //CreateUpgrades(Controller.Instance.data.SecondAgeProductionUpgradeLevels, 2);
         //CreateUpgrades(Controller.Instance.data.ThirdAgeProductionUpgradeLevels, 3);
         //CreateUpgrades(Controller.Instance.data.FourthAgeProductionUpgradeLevels, 4);
+
 
         void CreateUpgrades<T>(List<T> level, int index)
         {
@@ -141,9 +166,9 @@ public class UpgradesManager : MonoBehaviour
             void UpdateUI(int id)
             {
                 upgrades[id].levelText.text = "seviye: " + upgradeLevels[id].ToString();
-                upgrades[id].costText.text = $"{UpgradeCost(type, id):F2} \nyiyecek";
+                upgrades[id].costText.text = $"{UpgradeCost(type, id).Notate()} \nyiyecek";
                 upgrades[id].nameText.text = upgradeNames[id];
-                upgrades[id].productionText.text = $"tıklama başına \n+{upgradeHandlers[index].UpgradesBasePower[id]} yiyecek";
+                upgrades[id].productionText.text = $"tıklama başına \n+{(upgradeHandlers[index].UpgradesBasePower[id]).Notate()} yiyecek";
             }
 
         }

@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Panels")]
+    public GameObject settingsPanel;
+    public GameObject mainSettingsPanel;
+    public GameObject soundPanel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +19,28 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void ShowSettingsPanel()
+    {
+        settingsPanel.SetActive(true);
+    }
+    public void HideSettingsPanel()
+    {
+        settingsPanel.SetActive(false);
+    }
+    public void ShowSoundPanel()
+    {
+        soundPanel.SetActive(true);
+        mainSettingsPanel.SetActive(false);
+    }
+    public void HideSoundPanel()
+    {
+        soundPanel.SetActive(false);
+        mainSettingsPanel.SetActive(true);
+    }
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
