@@ -15,6 +15,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private TextMeshProUGUI clickText;
     [SerializeField] private TextMeshProUGUI productionText;
     public GameObject clickTextPrefab;
+    public Canvas clickTextCanvas;
 
     public AudioSource clickSound;
     private void Awake()
@@ -56,6 +57,8 @@ public class Controller : MonoBehaviour
             SaveSystem.SaveData(data, dataFileName);
             SaveTime = 0;
         }
+
+        UnlockAges();
     }
 
     public BigDouble ClickPower()
@@ -83,6 +86,7 @@ public class Controller : MonoBehaviour
             
             if (touch.phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(0))
             {
+                ShowClickText(false);
                 data.Food += ClickPower();
                 clickText.text = data.Food.ToString("F2");
                 clickSound.Play();
@@ -95,14 +99,28 @@ public class Controller : MonoBehaviour
         
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
-            //Vector3 mousePos = Input.mousePosition;
-            //Vector3 objPos= Camera.main.ScreenToWorldPoint(mousePos);
-            //GameObject go = Instantiate(clickTextPrefab, objPos, Quaternion.identity);
-            //go.transform.position = mousePos;
+            ShowClickText(true);
+
             data.Food += ClickPower();
             clickText.text = data.Food.ToString("F2");
             clickSound.Play();
         }
     }
 
+    void ShowClickText(bool platform)
+    {
+        Vector3 objPos = Camera.main.ScreenToWorldPoint(platform ? Input.mousePosition: Input.GetTouch(0).position);
+        GameObject go = Instantiate(clickTextPrefab, objPos, Quaternion.identity);
+        go.transform.SetParent(clickTextCanvas.transform, false);
+        go.transform.position = Input.mousePosition;
+    }
+
+    void UnlockAges()
+    {
+        BigDouble[] amount = new BigDouble[] { data.Diamond, 0, data.Food, data.Gold, data.Machine, data.Chip };
+        for (int i = 1; i < UpgradesManager.Instance.upgradeHandlers.Length; i++)
+        {
+            if (amount[i] >= data.lockRequires[i]) data.lockAges[i] = true;
+        }
+    }
 }

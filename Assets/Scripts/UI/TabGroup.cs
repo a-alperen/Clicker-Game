@@ -1,5 +1,6 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,17 +12,22 @@ public class TabGroup : MonoBehaviour
     public Sprite tabActive;
     public TabButton selectedTab;
     public List<GameObject> objectsToSwap;
-
+    public List<Sprite> ageSprites;
+    public List<Image> ageImages;
+    public GameObject lockPanel;
+    public Image lockPanelImage;
+    public TextMeshProUGUI requirementText;
     private void Start()
     {
-        selectedTab = tabButtons[1];
+
+    }
+    private void Update()
+    {
+        //Unlock();
     }
     public void Subscribe(TabButton button)
     {
-        if(tabButtons == null)
-        {
-            tabButtons = new List<TabButton>();
-        }
+        tabButtons ??= new List<TabButton>();
 
         tabButtons.Add(button);
     }
@@ -48,10 +54,23 @@ public class TabGroup : MonoBehaviour
         ResetTabs();
         button.background.sprite = tabActive;
         int index = button.transform.GetSiblingIndex();
+        Unlock(button);
+
         for (int i = 0;i < objectsToSwap.Count; i++)
         {
-            if (i == index) objectsToSwap[i].SetActive(true);
-            else objectsToSwap[i].SetActive(false);
+            lockPanel.SetActive(!Controller.Instance.data.lockAges[index]);
+            
+            if (i == index && Controller.Instance.data.lockAges[i])
+            {
+                objectsToSwap[i].SetActive(true);
+                
+            }
+            else
+            {
+                objectsToSwap[i].SetActive(false);
+                
+            }
+
         }
     }
 
@@ -64,5 +83,20 @@ public class TabGroup : MonoBehaviour
         }
     }
 
-    
+    void Unlock(TabButton button)
+    {
+
+        int index = button.transform.GetSiblingIndex();
+        var data = Controller.Instance.data;
+        for (int i = 0; i < data.lockAges.Length; i++)
+        {
+            lockPanelImage.sprite = ageSprites[index == 0 ? 0: index-1];
+            requirementText.text = Controller.Instance.data.lockRequires[index].Notate();
+            if (data.lockAges[i])
+            {
+                ageImages[i].sprite = ageSprites[i];
+                
+            }
+        }
+    }
 }

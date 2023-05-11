@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using BreakInfinity;
@@ -48,8 +46,6 @@ public class PrestigeManager : MonoBehaviour
         //UpgradesManager.Instance.UpdateUpgradeUI("SecondAge");
         //UpgradesManager.Instance.UpdateUpgradeUI("ThirdAge");
         //UpgradesManager.Instance.UpdateUpgradeUI("FourthAge");
-
-        
 
         TogglePrestigeConfirm();
     }

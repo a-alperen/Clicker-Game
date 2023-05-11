@@ -22,7 +22,7 @@ public class UpgradesManager : MonoBehaviour
         UpgradeUnlockSystem(Controller.Instance.data.Food, upgradeHandlers[0].UpgradesUnlock,0);
         UpgradeUnlockSystem(Controller.Instance.data.Food, upgradeHandlers[1].UpgradesUnlock, 1);
     }
-    void UpgradeUnlockSystem(BigDouble currency, BigDouble[] unlock, int index)
+    public void UpgradeUnlockSystem(BigDouble currency, BigDouble[] unlock, int index)
     {
         for (var i = 0; i < upgradeHandlers[index].Upgrades.Count; i++)
         {
@@ -46,13 +46,13 @@ public class UpgradesManager : MonoBehaviour
         //upgradeHandlers[4].UpgradesNames = new string[] { };
         //Base cost of upgrades
         upgradeHandlers[0].UpgradesBaseCost = new BigDouble[] { 10, 100, 500 ,2500, 10000, 25000,100000, 250000, 1000000, 5000000, 25000000, 50000000 };
-        upgradeHandlers[1].UpgradesBaseCost = new BigDouble[] { 25, 100, 1000, 7500, 20000, 50000, 100000, 500000 };
+        upgradeHandlers[1].UpgradesBaseCost = new BigDouble[] { 1000, 7500, 20000, 50000, 100000, 500000, 2500000, 10000000 };
         //upgradeHandlers[2].UpgradesBaseCost = new BigDouble[] { };
         //upgradeHandlers[3].UpgradesBaseCost = new BigDouble[] { };
         //upgradeHandlers[4].UpgradesBaseCost = new BigDouble[] { };
         // Cost multiplier of Upgrades
-        upgradeHandlers[0].UpgradesCostMultiplier = new BigDouble[] { 1.25, 1.35, 1.45, 1.55, 1.65, 1.75, 1.85, 1.95, 2.05, 2.15, 2.25, 2.35 };
-        upgradeHandlers[1].UpgradesCostMultiplier = new BigDouble[] { 1.5, 1.75, 2, 2.35, 2.75, 3.15, 3.55, 4 };
+        upgradeHandlers[0].UpgradesCostMultiplier = new BigDouble[] { 1.25, 1.27, 1.3, 1.32, 1.35, 1.37, 1.4, 1.42, 2.45, 2.47, 2.5, 2.52 };
+        upgradeHandlers[1].UpgradesCostMultiplier = new BigDouble[] { 1.5, 1.52, 1.54, 1.56, 1.58, 1.6, 1.62, 1.64 };
         //upgradeHandlers[2].UpgradesCostMultiplier = new BigDouble[] { };
         //upgradeHandlers[3].UpgradesCostMultiplier = new BigDouble[] { };
         //upgradeHandlers[4].UpgradesCostMultiplier = new BigDouble[] { };
@@ -74,21 +74,21 @@ public class UpgradesManager : MonoBehaviour
         };
         upgradeHandlers[1].UpgradesBasePower = new BigDouble[] 
         {
-            1 * PrestigeManager.Instance.PrestigeEffect(),
-            3 * PrestigeManager.Instance.PrestigeEffect(),
-            15 * PrestigeManager.Instance.PrestigeEffect(),
-            50 * PrestigeManager.Instance.PrestigeEffect(),
-            150 * PrestigeManager.Instance.PrestigeEffect(),
+            10 * PrestigeManager.Instance.PrestigeEffect(),
+            25 * PrestigeManager.Instance.PrestigeEffect(),
+            100 * PrestigeManager.Instance.PrestigeEffect(),
             500 * PrestigeManager.Instance.PrestigeEffect(),
-            1000 * PrestigeManager.Instance.PrestigeEffect(),
-            2000 * PrestigeManager.Instance.PrestigeEffect()
+            1250 * PrestigeManager.Instance.PrestigeEffect(),
+            4000 * PrestigeManager.Instance.PrestigeEffect(),
+            10000 * PrestigeManager.Instance.PrestigeEffect(),
+            25000 * PrestigeManager.Instance.PrestigeEffect()
         };
         //upgradeHandlers[2].UpgradesBasePower = new BigDouble[] { 0 };
         //upgradeHandlers[3].UpgradesBasePower = new BigDouble[] { 0 };
         //upgradeHandlers[4].UpgradesBasePower = new BigDouble[] { 0 };
         // Upgrades unlock amount
         upgradeHandlers[0].UpgradesUnlock = new BigDouble[] { 0, 50, 250, 1250, 5000, 12500, 50000, 125000, 500000, 2500000, 12500000, 25000000 };
-        upgradeHandlers[1].UpgradesUnlock = new BigDouble[] { 0, 50, 500, 3750, 10000, 25000, 50000, 250000 };
+        upgradeHandlers[1].UpgradesUnlock = new BigDouble[] { 0, 4000, 10000, 25000, 50000, 25000, 1250000, 5000000 };
         //upgradeHandlers[2].UpgradesUnlock = new BigDouble[] { };
         //upgradeHandlers[3].UpgradesUnlock = new BigDouble[] { };
         //upgradeHandlers[4].UpgradesUnlock = new BigDouble[] { };
