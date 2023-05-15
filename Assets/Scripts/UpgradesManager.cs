@@ -19,14 +19,23 @@ public class UpgradesManager : MonoBehaviour
     }
     private void Update()
     {
-        UpgradeUnlockSystem(Controller.Instance.data.Food, upgradeHandlers[0].UpgradesUnlock,0);
-        UpgradeUnlockSystem(Controller.Instance.data.Food, upgradeHandlers[1].UpgradesUnlock, 1);
+        UpgradeUnlockSystem(Controller.Instance.data.amounts[1], upgradeHandlers[0].UpgradesUnlock,0);
+        UpgradeUnlockSystem(Controller.Instance.data.amounts[1], upgradeHandlers[1].UpgradesUnlock, 1);
     }
     public void UpgradeUnlockSystem(BigDouble currency, BigDouble[] unlock, int index)
     {
         for (var i = 0; i < upgradeHandlers[index].Upgrades.Count; i++)
         {
             if (!upgradeHandlers[index].Upgrades[i].gameObject.activeSelf) upgradeHandlers[index].Upgrades[i].gameObject.SetActive(currency >= unlock[i]);
+
+        }
+    }
+    public void UpgradeLockSystem(int index)
+    {
+        for (var i = 0; i < upgradeHandlers[index].Upgrades.Count; i++)
+        {
+            if (upgradeHandlers[index].Upgrades[i].gameObject.activeSelf) upgradeHandlers[index].Upgrades[i].gameObject.SetActive(false);
+
         }
     }
     public void StartUpgradeManager()
@@ -168,7 +177,7 @@ public class UpgradesManager : MonoBehaviour
                 upgrades[id].levelText.text = "seviye: " + upgradeLevels[id].ToString();
                 upgrades[id].costText.text = $"{UpgradeCost(type, id).Notate()} \nyiyecek";
                 upgrades[id].nameText.text = upgradeNames[id];
-                upgrades[id].productionText.text = $"tıklama başına \n+{(upgradeHandlers[index].UpgradesBasePower[id]).Notate()} yiyecek";
+                upgrades[id].productionText.text = $"tıklama başına \n+{upgradeHandlers[index].UpgradesBasePower[id].Notate()} yiyecek";
             }
 
         }
@@ -198,9 +207,9 @@ public class UpgradesManager : MonoBehaviour
         }
         void Buy(List<int> upgrades)
         {
-            if (Controller.Instance.data.Food >= UpgradeCost(type, upgradeId))
+            if (Controller.Instance.data.amounts[1] >= UpgradeCost(type, upgradeId))
             {
-                Controller.Instance.data.Food -= UpgradeCost(type, upgradeId);
+                Controller.Instance.data.amounts[1] -= UpgradeCost(type, upgradeId);
                 upgrades[upgradeId] += 1;
             }
             UpdateUpgradeUI(type, upgradeId);

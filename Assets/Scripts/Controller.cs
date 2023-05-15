@@ -32,6 +32,8 @@ public class Controller : MonoBehaviour
 
         UpgradesManager.Instance.StartUpgradeManager();
         Settings.Instance.StartSettings();
+
+        
     }
 
     public float SaveTime;
@@ -46,9 +48,9 @@ public class Controller : MonoBehaviour
         
 #endif
 
-        productionText.text = $"{ProductionPerSecond():F2}/s";
-        clickText.text = $"{data.Food.Notate()} Yiyecek";
-        data.Food += ProductionPerSecond() * Time.deltaTime;
+        productionText.text = $"{ProductionPerSecond().Notate()}/s";
+        clickText.text = $"{data.amounts[1].Notate()} Yiyecek";
+        data.amounts[1] += ProductionPerSecond() * Time.deltaTime;
 
         SaveTime += Time.deltaTime * (1 / Time.timeScale);
 
@@ -57,8 +59,7 @@ public class Controller : MonoBehaviour
             SaveSystem.SaveData(data, dataFileName);
             SaveTime = 0;
         }
-
-        UnlockAges();
+        
     }
 
     public BigDouble ClickPower()
@@ -67,7 +68,7 @@ public class Controller : MonoBehaviour
         for (int i = 0; i < data.ClickUpgradeLevels.Count; i++)
             total += UpgradesManager.Instance.upgradeHandlers[0].UpgradesBasePower[i] * data.ClickUpgradeLevels[i];
         
-        return total * PrestigeManager.Instance.PrestigeEffect();
+        return total;
     }
     public BigDouble ProductionPerSecond()
     {
@@ -75,7 +76,7 @@ public class Controller : MonoBehaviour
         for (int i = 0; i < data.FirstAgeProductionUpgradeLevels.Count; i++)
             total += UpgradesManager.Instance.upgradeHandlers[1].UpgradesBasePower[i] * data.FirstAgeProductionUpgradeLevels[i];
 
-        return total * PrestigeManager.Instance.PrestigeEffect();
+        return total;
     }
 
     private void PhoneClick()
@@ -87,8 +88,8 @@ public class Controller : MonoBehaviour
             if (touch.phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(0))
             {
                 ShowClickText(false);
-                data.Food += ClickPower();
-                clickText.text = data.Food.ToString("F2");
+                data.amounts[1] += ClickPower();
+                clickText.text = data.amounts[1].Notate();
                 clickSound.Play();
             }
         }
@@ -101,8 +102,8 @@ public class Controller : MonoBehaviour
         {
             ShowClickText(true);
 
-            data.Food += ClickPower();
-            clickText.text = data.Food.ToString("F2");
+            data.amounts[1] += ClickPower();
+            clickText.text = data.amounts[1].Notate();
             clickSound.Play();
         }
     }
@@ -117,10 +118,24 @@ public class Controller : MonoBehaviour
 
     void UnlockAges()
     {
-        BigDouble[] amount = new BigDouble[] { data.Diamond, 0, data.Food, data.Gold, data.Machine, data.Chip };
-        for (int i = 1; i < UpgradesManager.Instance.upgradeHandlers.Length; i++)
+        if (data.amounts[1] >= data.lockRequires[0])
         {
-            if (amount[i] >= data.lockRequires[i]) data.lockAges[i] = true;
+            data.lockPanels[2] = true;
         }
+        if (data.amounts[1] >= data.lockRequires[1])
+        {
+            data.lockPanels[3] = true;
+        }
+        if (data.amounts[2] >= data.lockRequires[2])
+        {
+            data.lockPanels[4] = true;
+        }
+        if (data.amounts[3] >= data.lockRequires[3])
+        {
+            data.lockPanels[5] = true;
+        }
+        //lockRequires = new BigDouble[] { 1000,5000000,1000000000, 999999999999999 };
+        //amounts = new BigDouble[] { 0, 0, 0, 0, 0 }; // 0-diamond 1-Food 2-Gold 3-machine 4-chip
+
     }
 }

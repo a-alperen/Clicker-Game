@@ -18,15 +18,15 @@ public class PrestigeManager : MonoBehaviour
     private void Update()
     {
         prestigeGainText.text = $"Prestij:\n+{PrestigeGains().Notate()} Elmas";
-        prestigeCurrencyText.text = $"{Controller.Instance.data.Diamond.Notate()} Elmas";
+        prestigeCurrencyText.text = $"{Controller.Instance.data.amounts[0].Notate()} Elmas";
     }
     public BigDouble PrestigeGains()
     {
-        return BigDouble.Sqrt(Controller.Instance.data.Food / (BigDouble)1000);
+        return BigDouble.Sqrt(Controller.Instance.data.amounts[1] / (BigDouble)1000);
     }
     public BigDouble PrestigeEffect()
     {
-        return Controller.Instance.data.Diamond / 100 + 1;
+        return Controller.Instance.data.amounts[0] / 100 + 1;
     }
     public void TogglePrestigeConfirm()
     {
@@ -34,15 +34,23 @@ public class PrestigeManager : MonoBehaviour
     }
     public void Prestige()
     {
-        Controller.Instance.data.Diamond += PrestigeGains();
+        var data = Controller.Instance.data;
+        data.amounts[0] += PrestigeGains();
 
-        Controller.Instance.data.Food = 0;
+        data.amounts[1] = 0;
+        data.amounts[2] = 0;
+        data.amounts[3] = 0;
+        data.amounts[4] = 0;
 
-        Controller.Instance.data.ClickUpgradeLevels = new int[12].ToList();
-        Controller.Instance.data.FirstAgeProductionUpgradeLevels = new int[8].ToList();
+        data.ClickUpgradeLevels = new int[12].ToList();
+        data.FirstAgeProductionUpgradeLevels = new int[8].ToList();
+        data.lockPanels = new bool[] { true, true, false, false, false, false };
 
         UpgradesManager.Instance.UpdateUpgradeUI("Click");
         UpgradesManager.Instance.UpdateUpgradeUI("FirstAge");
+        UpgradesManager.Instance.UpgradeLockSystem(0);
+        UpgradesManager.Instance.UpgradeLockSystem(1);
+
         //UpgradesManager.Instance.UpdateUpgradeUI("SecondAge");
         //UpgradesManager.Instance.UpdateUpgradeUI("ThirdAge");
         //UpgradesManager.Instance.UpdateUpgradeUI("FourthAge");

@@ -7,12 +7,9 @@ using System;
 [Serializable]
 public class Data
 {
-    public BigDouble Diamond;
-    public BigDouble Food;
-    public BigDouble Gold;
-    public BigDouble Machine;
-    public BigDouble Chip;
-    public bool[] lockAges;
+    
+    public BigDouble[] amounts;
+    public bool[] lockPanels;
     public BigDouble[] lockRequires;
 
     public List<int> ClickUpgradeLevels;
@@ -25,13 +22,10 @@ public class Data
     
     public Data()
     {
-        Diamond = 0;
-        Food = 0;
-        Gold = 0;
-        Machine = 0;
-        Chip = 0;
-        lockAges = new bool[] { true, false, false, false, false, false };
-        lockRequires = new BigDouble[] { -1,0,1000,5000000,1000000000, 999999999999999};
+        amounts = new BigDouble[] { 0,0,0,0,0 }; // 0-diamond 1-Food 2-Gold 3-machine 4-chip
+        
+        lockPanels = new bool[] { true, true, false, false, false, false };
+        lockRequires = new BigDouble[] { 1000,5000000,1000000000, 999999999999999 };
         ClickUpgradeLevels = new int[12].ToList();
         FirstAgeProductionUpgradeLevels = new int[8].ToList();
 
