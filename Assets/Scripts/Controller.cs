@@ -48,7 +48,7 @@ public class Controller : MonoBehaviour
         
 #endif
 
-        productionText.text = $"{ProductionPerSecond().Notate()}/s";
+        //productionText.text = $"{ProductionPerSecond().Notate()}/s";
         clickText.text = $"{data.amounts[1].Notate()} Yiyecek";
         data.amounts[1] += ProductionPerSecond() * Time.deltaTime;
 
