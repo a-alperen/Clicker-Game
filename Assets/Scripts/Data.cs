@@ -8,26 +8,30 @@ using System;
 public class Data
 {
     
-    public BigDouble[] amounts;
+    public BigDouble[] sectionAmounts;
+    public BigDouble humanAmount;
     public bool[] lockPanels;
     public BigDouble[] lockRequires;
 
-    public List<int> ClickUpgradeLevels;
-    public List<int> FirstAgeProductionUpgradeLevels;
-    public List<int> SecondAgeProductionUpgradeLevels;
-    public List<int> ThirdAgeProductionUpgradeLevels;
-    public List<int> FourthAgeProductionUpgradeLevels;
+    public List<BigDouble> FoodLevels;
+    public List<BigDouble> MilitaryLevels;
+    public List<BigDouble> LandLevels;
+    public List <BigDouble> MaterialLevels;
+
 
     public int notation;
     
     public Data()
     {
-        amounts = new BigDouble[] { 0,0,0,0,0 }; // 0-diamond 1-Food 2-Gold 3-machine 4-chip
-        
+        sectionAmounts = new BigDouble[] { 0,0,0,0 }; // 0-Food 1-Military 2-Land 3-Material
+        humanAmount = 0;
+        FoodLevels = new BigDouble[8].ToList();
+        MilitaryLevels = new BigDouble[10].ToList();
+        LandLevels = new BigDouble[10].ToList();
+        MaterialLevels = new BigDouble[9].ToList();
+
         lockPanels = new bool[] { true, true, false, false, false, false };
-        lockRequires = new BigDouble[] { 1000,5000000,1000000000, 999999999999999 };
-        ClickUpgradeLevels = new int[12].ToList();
-        FirstAgeProductionUpgradeLevels = new int[8].ToList();
+        lockRequires = new BigDouble[] { 0, 0, 0, 0 };
 
         notation = 0;
     }

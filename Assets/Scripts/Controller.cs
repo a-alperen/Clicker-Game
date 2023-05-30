@@ -11,13 +11,9 @@ public class Controller : MonoBehaviour
     private const string dataFileName = "PlayerData";
 
     public Data data;
-
-    [SerializeField] private TextMeshProUGUI clickText;
-    [SerializeField] private TextMeshProUGUI productionText;
-    public GameObject clickTextPrefab;
-    public Canvas clickTextCanvas;
-
+    [SerializeField] private TextMeshProUGUI[] sectionText;
     public AudioSource clickSound;
+
     private void Awake()
     {
         Instance = this;
@@ -41,16 +37,9 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-#if UNITY_EDITOR
-        ComputerClick();
-#else
-        PhoneClick();
-        
-#endif
-
+        UpdateSectionText();
         //productionText.text = $"{ProductionPerSecond().Notate()}/s";
-        clickText.text = $"{data.amounts[1].Notate()} Yiyecek";
-        data.amounts[1] += ProductionPerSecond() * Time.deltaTime;
+        //data.amounts[1] += ProductionPerSecond() * Time.deltaTime;
 
         SaveTime += Time.deltaTime * (1 / Time.timeScale);
 
@@ -62,80 +51,102 @@ public class Controller : MonoBehaviour
         
     }
 
-    public BigDouble ClickPower()
-    {
-        BigDouble total = 1;
-        for (int i = 0; i < data.ClickUpgradeLevels.Count; i++)
-            total += UpgradesManager.Instance.upgradeHandlers[0].UpgradesBasePower[i] * data.ClickUpgradeLevels[i];
+    //public BigDouble ClickPower()
+    //{
+    //    BigDouble total = 1;
+    //    for (int i = 0; i < data.ClickUpgradeLevels.Count; i++)
+    //        total += UpgradesManager.Instance.upgradeHandlers[0].UpgradesBasePower[i] * data.ClickUpgradeLevels[i];
         
-        return total;
-    }
-    public BigDouble ProductionPerSecond()
-    {
-        BigDouble total = 0;
-        for (int i = 0; i < data.FirstAgeProductionUpgradeLevels.Count; i++)
-            total += UpgradesManager.Instance.upgradeHandlers[1].UpgradesBasePower[i] * data.FirstAgeProductionUpgradeLevels[i];
+    //    return total;
+    //}
+    //public BigDouble ProductionPerSecond()
+    //{
+    //    BigDouble total = 0;
+    //    for (int i = 0; i < data.FirstAgeProductionUpgradeLevels.Count; i++)
+    //        total += UpgradesManager.Instance.upgradeHandlers[1].UpgradesBasePower[i] * data.FirstAgeProductionUpgradeLevels[i];
 
-        return total;
-    }
+    //    return total;
+    //}
 
-    private void PhoneClick()
+    public void Click(string amountName)
     {
-        if (Input.touchCount > 0)
+        switch (amountName)
         {
-            Touch touch = Input.GetTouch(0);
-            
-            if (touch.phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(0))
-            {
-                ShowClickText(false);
-                data.amounts[1] += ClickPower();
-                clickText.text = data.amounts[1].Notate();
-                clickSound.Play();
-            }
+            case "Food":
+                data.sectionAmounts[0] += 1;
+                break;
+            case "Military":
+                data.sectionAmounts[1] += 1;
+                break;
+            case "Land":
+                data.sectionAmounts[2] += 1;
+                break;
+            case "Material":
+                data.sectionAmounts[3] += 1;
+                break;
+            default:
+                break;
         }
-    }
 
-    private void ComputerClick()
-    {
-        
-        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
-        {
-            ShowClickText(true);
-
-            data.amounts[1] += ClickPower();
-            clickText.text = data.amounts[1].Notate();
-            clickSound.Play();
-        }
     }
 
-    void ShowClickText(bool platform)
+    private void UpdateSectionText()
     {
-        Vector3 objPos = Camera.main.ScreenToWorldPoint(platform ? Input.mousePosition: Input.GetTouch(0).position);
-        GameObject go = Instantiate(clickTextPrefab, objPos, Quaternion.identity);
-        go.transform.SetParent(clickTextCanvas.transform, false);
-        go.transform.position = Input.mousePosition;
-    }
-
-    void UnlockAges()
-    {
-        if (data.amounts[1] >= data.lockRequires[0])
-        {
-            data.lockPanels[2] = true;
-        }
-        if (data.amounts[1] >= data.lockRequires[1])
-        {
-            data.lockPanels[3] = true;
-        }
-        if (data.amounts[2] >= data.lockRequires[2])
-        {
-            data.lockPanels[4] = true;
-        }
-        if (data.amounts[3] >= data.lockRequires[3])
-        {
-            data.lockPanels[5] = true;
-        }
-        //lockRequires = new BigDouble[] { 1000,5000000,1000000000, 999999999999999 };
-        //amounts = new BigDouble[] { 0, 0, 0, 0, 0 }; // 0-diamond 1-Food 2-Gold 3-machine 4-chip
-
+        sectionText[0].text = $"Yiyecek\n{data.sectionAmounts[0].Notate()}";
+        sectionText[1].text = $"Askeri\n{data.sectionAmounts[1].Notate()}";
+        sectionText[2].text = $"Toprak\n{data.sectionAmounts[2].Notate()}";
+        sectionText[3].text = $"Materyal\n{data.sectionAmounts[3].Notate()}";
     }
 }
+//private void PhoneClick()
+//{
+//    if (Input.touchCount > 0)
+//    {
+//        Touch touch = Input.GetTouch(0);
+
+//        if (touch.phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(0))
+//        {
+//            ShowClickText(false);
+//            data.amounts[1] += ClickPower();
+//            clickText.text = data.amounts[1].Notate();
+//            clickSound.Play();
+//        }
+//    }
+//}
+//if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+//{
+//    ShowClickText(true);
+
+//    data.amounts[1] += ClickPower();
+//    clickText.text = data.amounts[1].Notate();
+//    clickSound.Play();
+//}
+//void ShowClickText(bool platform)
+//{
+//    Vector3 objPos = Camera.main.ScreenToWorldPoint(platform ? Input.mousePosition: Input.GetTouch(0).position);
+//    GameObject go = Instantiate(clickTextPrefab, objPos, Quaternion.identity);
+//    go.transform.SetParent(clickTextCanvas.transform, false);
+//    go.transform.position = Input.mousePosition;
+//}
+//void UnlockAges()
+//{
+//    if (data.amounts[1] >= data.lockRequires[0])
+//    {
+//        data.lockPanels[2] = true;
+//    }
+//    if (data.amounts[1] >= data.lockRequires[1])
+//    {
+//        data.lockPanels[3] = true;
+//    }
+//    if (data.amounts[2] >= data.lockRequires[2])
+//    {
+//        data.lockPanels[4] = true;
+//    }
+//    if (data.amounts[3] >= data.lockRequires[3])
+//    {
+//        data.lockPanels[5] = true;
+//    }
+//    //lockRequires = new BigDouble[] { 1000,5000000,1000000000, 999999999999999 };
+//    //amounts = new BigDouble[] { 0, 0, 0, 0, 0 }; // 0-diamond 1-Food 2-Gold 3-machine 4-chip
+
+//}

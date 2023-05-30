@@ -12,21 +12,8 @@ public class TabGroup : MonoBehaviour
     public Sprite tabActive;
     public TabButton selectedTab;
     public List<GameObject> objectsToSwap;          // Panellerin tutuldugu degisken
-    public List<Sprite> ageSprites;                 // Panel sekme resimleri
-    public List<Image> ageImages;                   // Resimlerin gelecegi resim yerleri
-    public GameObject lockPanel;                    // Panel kapaliysa ekrana gelen panel
-    public Image lockPanelImage;                    // Lock panelde yer alan gereksinim resmi
-    public TextMeshProUGUI requirementText;         // Kilidin acilmasi icin gerekli olan miktari ekrana yazan metin
-    public Sprite lockSprite;                       // Kilit logosu
-    private void Start()
-    {
-        InvokeRepeating(nameof(UnlockAges), 0, 0.1f);
-        InvokeRepeating(nameof(PanelsSmallImage), 0, 0.1f);
-    }
-    private void Update()
-    {
-        //Unlock();
-    }
+
+    
     public void Subscribe(TabButton button)
     {
         tabButtons ??= new List<TabButton>();
@@ -56,13 +43,11 @@ public class TabGroup : MonoBehaviour
         ResetTabs();
         button.background.sprite = tabActive;
         int index = button.transform.GetSiblingIndex();
-        Unlock(button);
 
         for (int i = 0;i < objectsToSwap.Count; i++)
         {
-            lockPanel.SetActive(!Controller.Instance.data.lockPanels[index]);
             
-            if (i == index && Controller.Instance.data.lockPanels[i])
+            if (i == index)
             {
                 objectsToSwap[i].SetActive(true);
                 
@@ -85,48 +70,50 @@ public class TabGroup : MonoBehaviour
         }
     }
 
-    void Unlock(TabButton button)
-    {
 
-        int index = button.transform.GetSiblingIndex();
-        var data = Controller.Instance.data;
-        for (int i = 0; i < data.lockPanels.Length; i++)
-        {
-            lockPanelImage.sprite = ageSprites[index - 3 < 0 ? 0 : index - 3];
-            requirementText.text = Controller.Instance.data.lockRequires[index-2 < 0 ? 0 : index-2].Notate();
-            
-        }
-    }
-    void UnlockAges()
-    {
-        var data = Controller.Instance.data;
-        if (data.amounts[1] >= data.lockRequires[0])
-        {
-            data.lockPanels[2] = true;
-        }
-        if (data.amounts[1] >= data.lockRequires[1])
-        {
-            data.lockPanels[3] = true;
-        }
-        if (data.amounts[2] >= data.lockRequires[2])
-        {
-            data.lockPanels[4] = true;
-        }
-        if (data.amounts[3] >= data.lockRequires[3])
-        {
-            data.lockPanels[5] = true;
-        }
-        //lockRequires = new BigDouble[] { 1000,5000000,1000000000, 999999999999999 };
-        //amounts = new BigDouble[] { 0, 0, 0, 0, 0 }; // 0-diamond 1-Food 2-Gold 3-machine 4-chip
+    //void UnlockAges()
+    //{
+    //    var data = Controller.Instance.data;
+    //    if (data.amounts[1] >= data.lockRequires[0])
+    //    {
+    //        data.lockPanels[2] = true;
+    //    }
+    //    if (data.amounts[1] >= data.lockRequires[1])
+    //    {
+    //        data.lockPanels[3] = true;
+    //    }
+    //    if (data.amounts[2] >= data.lockRequires[2])
+    //    {
+    //        data.lockPanels[4] = true;
+    //    }
+    //    if (data.amounts[3] >= data.lockRequires[3])
+    //    {
+    //        data.lockPanels[5] = true;
+    //    }
+    //    //lockRequires = new BigDouble[] { 1000,5000000,1000000000, 999999999999999 };
+    //    //amounts = new BigDouble[] { 0, 0, 0, 0, 0 }; // 0-diamond 1-Food 2-Gold 3-machine 4-chip
 
-    }
-    void PanelsSmallImage()
-    {
-        var data = Controller.Instance.data;
-        for (int i = 2; i < data.lockPanels.Length; i++)
-        {
-            if (data.lockPanels[i]) ageImages[i - 2].sprite = ageSprites[i - 2];
-            else ageImages[i - 2].sprite = lockSprite;
-        }
-    }
+    //}
+
 }
+//void PanelsSmallImage()
+//{
+//    var data = Controller.Instance.data;
+//    for (int i = 2; i < data.lockPanels.Length; i++)
+//    {
+//        if (data.lockPanels[i]) ageImages[i - 2].sprite = ageSprites[i - 2];
+//        else ageImages[i - 2].sprite = lockSprite;
+//    }
+//}
+//void Unlock(TabButton button)
+//{
+
+//    int index = button.transform.GetSiblingIndex();
+//    var data = Controller.Instance.data;
+//    for (int i = 0; i < data.lockPanels.Length; i++)
+//    {
+//        lockPanelImage.sprite = ageSprites[index - 3 < 0 ? 0 : index - 3];
+//        requirementText.text = Controller.Instance.data.lockRequires[index-2 < 0 ? 0 : index-2].Notate();
+
+//    }
+//}
