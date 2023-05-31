@@ -34,11 +34,11 @@ public class Settings : MonoBehaviour
 
         SyncSetting(settingName);
 
-        UpgradesManager.Instance.UpdateUpgradeUI("Click");
-        UpgradesManager.Instance.UpdateUpgradeUI("FirstAge");
-        //UpgradesManager.Instance.UpdateUpgradeUI("SecondAge");
-        //UpgradesManager.Instance.UpdateUpgradeUI("ThirdAge");
-        //UpgradesManager.Instance.UpdateUpgradeUI("FourthAge");
+        UpgradesManager.Instance.UpdateUpgradeUI("Food");
+        UpgradesManager.Instance.UpdateUpgradeUI("Military");
+        UpgradesManager.Instance.UpdateUpgradeUI("Land");
+        UpgradesManager.Instance.UpdateUpgradeUI("Material");
+
 
     }
     public void SyncSetting(string settingName = "")

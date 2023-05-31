@@ -802,7 +802,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5682892013960163751}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7387234763981977144}
+        m_TargetAssemblyTypeName: Upgrades, Assembly-CSharp
+        m_MethodName: BuyMilitaryUpgrade
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5682892014025953024
 GameObject:
   m_ObjectHideFlags: 0
@@ -1405,4 +1417,16 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 79972720224193010}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7387234763981977144}
+        m_TargetAssemblyTypeName: Upgrades, Assembly-CSharp
+        m_MethodName: ShowMilitaryCostAmount
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

@@ -8,12 +8,33 @@ public class Upgrades : MonoBehaviour
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI productionText;
 
-    public void ShowCostAmount() => UpgradesManager.Instance.CostInfo(upgradeId);
+    public void ShowFoodCostAmount() => UpgradesManager.Instance.CostInfo("Food", upgradeId);
+    public void ShowMilitaryCostAmount() => UpgradesManager.Instance.CostInfo("Military", upgradeId);
+    public void ShowLandCostAmount() => UpgradesManager.Instance.CostInfo("Land", upgradeId);
+    public void ShowMaterialCostAmount() => UpgradesManager.Instance.CostInfo("Material", upgradeId);
 
-    public void BuyClickUpgrade() => UpgradesManager.Instance.BuyUpgrade("Click",upgradeId);
-    public void BuyFirstAgeUpgrade() => UpgradesManager.Instance.BuyUpgrade("FirstAge", upgradeId);
-    public void BuySecondAgeUpgrade() => UpgradesManager.Instance.BuyUpgrade("SecondAge", upgradeId);
-    public void BuyThirdAgeUpgrade() => UpgradesManager.Instance.BuyUpgrade("ThirdAge", upgradeId);
-    public void BuyFourthAgeUpgrade() => UpgradesManager.Instance.BuyUpgrade("FourthAge", upgradeId);
 
+    public void BuyFoodUpgrade()
+    {
+        UpgradesManager.Instance.CostInfo("Food", upgradeId);
+        UpgradesManager.Instance.BuyUpgrade("Food", upgradeId);
+    }
+
+    public void BuyMilitaryUpgrade()
+    {
+        UpgradesManager.Instance.CostInfo("Military", upgradeId);
+        UpgradesManager.Instance.BuyUpgrade("Military", upgradeId);
+    }
+
+    public void BuyLandUpgrade()
+    {
+        UpgradesManager.Instance.CostInfo("Land", upgradeId);
+        UpgradesManager.Instance.BuyUpgrade("Land", upgradeId);
+    }
+
+    public void BuyMaterialUpgrade()
+    {
+        UpgradesManager.Instance.CostInfo("Material", upgradeId);
+        UpgradesManager.Instance.BuyUpgrade("Material", upgradeId);
+    }
 }

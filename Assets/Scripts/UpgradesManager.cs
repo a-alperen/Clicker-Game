@@ -13,8 +13,9 @@ public class UpgradesManager : MonoBehaviour
     public static UpgradesManager Instance { get; private set; }
 
     public NewUpgradeHandler[] newUpgradeHandlers;
-    public TextMeshProUGUI[] upgradeCostTexts;
+    public GameObject[] upgradeCostTexts;
     public Image[] upgradeCostImages;
+    public Sprite[] upgradeCostSprites;
     private void Awake()
     {
         Instance = this;
@@ -53,43 +54,43 @@ public class UpgradesManager : MonoBehaviour
         newUpgradeHandlers[2].UpgradesNames = new string[] { "Orman", "Tarla", "Mezra", "Şehir", "Eyalet", "Ülke", "Kıta", "Dünya", "Güneş Sistemi", "Galaksi" };
         newUpgradeHandlers[3].UpgradesNames = new string[] { "Odun", "Taş", "Bakır", "Demir", "Kurşun", "Kömür", "Çelik", "Titanyum", "Elmas" };
 
-        // 0- Yiyecek 1- Askeri 2- Toprak 3- Materyal 4- Önceki Geliştirme 5- İnsan sayısı
+        // 0- Yiyecek 1- Askeri 2- Toprak 3- Materyal 4- İnsan sayısı 5- Önceki Geliştirme 
         newUpgradeHandlers[0].UpgradesCost = new List<List<BigDouble>> {
-            new List<BigDouble> { 25    , 0, 10   , 0    , 0   , 1    }, //Toplayıcı 
-            new List<BigDouble> { 10e3  , 0, 1e3  , 1e3  , 100 , 10   }, // Avcı
-            new List<BigDouble> { 1e6   , 0, 1e4  , 1e3  , 1e3 , 100  }, // Çiftçi
-            new List<BigDouble> { 1e9   , 0, 1e7  , 1e6  , 1e4 , 1e3  }, // Topluluk
-            new List<BigDouble> { 1e15  , 0, 1e12 , 25e10, 1e4 , 1e5  }, // Değirmen
-            new List<BigDouble> { 5e22  , 0, 1e19 , 5e18 , 1e5 , 1e7  }, // Traktör
-            new List<BigDouble> { 1e30  , 0, 25e25, 5e21 , 25e4, 1e10 }, // Biçerdöver
-            new List<BigDouble> { 5e40  , 0, 75e36, 25e35, 1e6 , 1e15 }  // Fabrika
+            new List<BigDouble> { 25    , 0, 10   , 0    , 1   , 0    }, //Toplayıcı 
+            new List<BigDouble> { 10e3  , 0, 1e3  , 1e3  , 10 , 100   }, // Avcı
+            new List<BigDouble> { 1e6   , 0, 1e4  , 1e3  , 100 , 1e3  }, // Çiftçi
+            new List<BigDouble> { 1e9   , 0, 1e7  , 1e6  , 1e3, 1e4  }, // Topluluk
+            new List<BigDouble> { 1e15  , 0, 1e12 , 25e10, 1e5, 1e4  }, // Değirmen
+            new List<BigDouble> { 5e22  , 0, 1e19 , 5e18 , 1e7, 1e5  }, // Traktör
+            new List<BigDouble> { 1e30  , 0, 25e25, 5e21 , 1e10, 25e4 }, // Biçerdöver
+            new List<BigDouble> { 5e40  , 0, 75e36, 25e35, 1e15, 1e6 }  // Fabrika
         };
         newUpgradeHandlers[1].UpgradesCost = new List<List<BigDouble>> {
-            new List<BigDouble> { 50    , 100  , 0, 25   , 0   , 1   },
+            new List<BigDouble> { 50    , 100  , 0, 25   , 1   , 0   },
             new List<BigDouble> { 1e3   , 25e3 , 0, 1e3  , 10  , 10  },
-            new List<BigDouble> { 25e4  , 1e6  , 0, 1e5  , 5e1 , 100 },
-            new List<BigDouble> { 1e7   , 25e9 , 0, 25e6 , 1e2 , 1e3 }, 
-            new List<BigDouble> { 5e10  , 1e14 , 0, 25e11, 1e3 , 1e4 },
-            new List<BigDouble> { 25e15 , 25e19, 0, 1e17 , 25e2, 1e5 }, 
-            new List<BigDouble> { 75e21 , 1e25 , 0, 5e22 , 1e4 , 1e6 }, 
-            new List<BigDouble> { 5e26  , 75e30, 0, 25e26, 25e3, 1e7 }, 
-            new List<BigDouble> { 1e32  , 25e35, 0, 1e33 , 1e5 , 1e8 },
-            new List<BigDouble> { 25e37 , 1e41 , 0, 5e38 , 1e6 , 1e9 }
+            new List<BigDouble> { 25e4  , 1e6  , 0, 1e5  , 100, 5e1 },
+            new List<BigDouble> { 1e7   , 25e9 , 0, 25e6 , 1e3, 1e2 }, 
+            new List<BigDouble> { 5e10  , 1e14 , 0, 25e11, 1e4, 1e3 },
+            new List<BigDouble> { 25e15 , 25e19, 0, 1e17 , 1e5, 25e2 }, 
+            new List<BigDouble> { 75e21 , 1e25 , 0, 5e22 , 1e6, 1e4 }, 
+            new List<BigDouble> { 5e26  , 75e30, 0, 25e26, 1e7, 25e3 }, 
+            new List<BigDouble> { 1e32  , 25e35, 0, 1e33 , 1e8, 1e5 },
+            new List<BigDouble> { 25e37 , 1e41 , 0, 5e38 , 1e9, 1e6 }
         };
         newUpgradeHandlers[2].UpgradesCost = new List<List<BigDouble>> {
-            new List<BigDouble> { 50   , 0    , 100  , 10   , 0  , 1   },
-            new List<BigDouble> { 1e3  , 250  , 1e4  , 750  , 25 , 1e1 },
-            new List<BigDouble> { 1e5  , 1e5  , 25e5 , 1e4  , 5e1, 1e2 },
-            new List<BigDouble> { 25e4 , 25e5 , 1e7  , 1e6  , 1e2, 1e3 },
-            new List<BigDouble> { 75e7 , 5e11 , 5e12 , 25e10, 1e3, 1e4 },
-            new List<BigDouble> { 1e15 , 1e16 , 1e18 , 5e16 , 1e4, 1e5 },
-            new List<BigDouble> { 5e21 , 75e22, 75e25, 1e21 , 1e5, 1e6 },
-            new List<BigDouble> { 25e25, 25e26, 1e29 , 75e25, 1e6, 1e7 },
-            new List<BigDouble> { 1e31 , 1e32 , 5e35 , 25e31, 1e7, 1e8 },
-            new List<BigDouble> { 75e36, 5e41 , 25e42, 1e38 , 1e8, 1e9 }
+            new List<BigDouble> { 50   , 0    , 100  , 10   , 1  , 0   },
+            new List<BigDouble> { 1e3  , 250  , 1e4  , 750  , 1e1, 25  },
+            new List<BigDouble> { 1e5  , 1e5  , 25e5 , 1e4  , 1e2, 5e1 },
+            new List<BigDouble> { 25e4 , 25e5 , 1e7  , 1e6  , 1e3, 1e2 },
+            new List<BigDouble> { 75e7 , 5e11 , 5e12 , 25e10, 1e4, 1e3 },
+            new List<BigDouble> { 1e15 , 1e16 , 1e18 , 5e16 , 1e5, 1e4 },
+            new List<BigDouble> { 5e21 , 75e22, 75e25, 1e21 , 1e6, 1e5 },
+            new List<BigDouble> { 25e25, 25e26, 1e29 , 75e25, 1e7, 1e6 },
+            new List<BigDouble> { 1e31 , 1e32 , 5e35 , 25e31, 1e8, 1e7 },
+            new List<BigDouble> { 75e36, 5e41 , 25e42, 1e38 , 1e9, 1e8 }
         };
         newUpgradeHandlers[3].UpgradesCost = new List<List<BigDouble>> {
-            new List<BigDouble> { 10   , 0, 10   , 25   , 0  , 1   },
+            new List<BigDouble> { 10   , 0, 10   , 25   , 1  , 0   },
             new List<BigDouble> { 25e4 , 0, 5e5  , 5e6  , 1e1, 1e1 },
             new List<BigDouble> { 5e7  , 0, 1e8  , 75e10, 1e2, 1e2 },
             new List<BigDouble> { 75e12, 0, 75e12, 1e15 , 1e3, 1e3 },
@@ -232,9 +233,48 @@ public class UpgradesManager : MonoBehaviour
             return isBuyable;
         }
     }
-    public void CostInfo(int upgradeId)
+    public void CostInfo( string type, int upgradeId)
     {
-        
+        switch (type)
+        {
+            case "Food":
+                Cost(newUpgradeHandlers[0].UpgradesCost[upgradeId]);
+                break;
+            case "Military":
+                Cost(newUpgradeHandlers[1].UpgradesCost[upgradeId]);
+                break;
+            case "Land":
+                Cost(newUpgradeHandlers[2].UpgradesCost[upgradeId]);
+                break;
+            case "Material":
+                Cost(newUpgradeHandlers[3].UpgradesCost[upgradeId]);
+                break;
+            default:
+                break;
+        }
+
+        void Cost(List<BigDouble> upgradesCost)
+        {
+            for (int i =0; i< upgradeCostTexts.Length;i++) upgradeCostTexts[i].SetActive(false);
+            for (int i = 0; i < upgradeCostSprites.Length; i++) upgradeCostImages[i].sprite = upgradeCostSprites[i];
+            
+            for(int i = 0;i < upgradesCost.Count;i++)
+            {
+                if (upgradesCost[i] != 0)
+                {
+                    upgradeCostTexts[i].SetActive(true);
+                    upgradeCostTexts[i].GetComponent<TextMeshProUGUI>().text = $"{upgradesCost[i].Notate()}";
+                    
+                }
+            }
+            for (int j = 0; j < Controller.Instance.data.sectionAmounts.Length; j++)
+            {
+                if (Controller.Instance.data.sectionAmounts[j] >= upgradesCost[j]) upgradeCostTexts[j].GetComponent<TextMeshProUGUI>().color = Color.yellow;
+                else upgradeCostTexts[j].GetComponent<TextMeshProUGUI>().color = Color.red;
+            }
+            if(Controller.Instance.data.humanAmount >= upgradesCost[4]) upgradeCostTexts[4].GetComponent<TextMeshProUGUI>().color = Color.yellow;
+            else upgradeCostTexts[4].GetComponent<TextMeshProUGUI>().color = Color.red;
+        }
     }
 }
 //Methods.CheckList( Controller.Instance.data.ClickUpgradeLevels, 12 );
