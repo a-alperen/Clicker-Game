@@ -16,25 +16,25 @@ public class Upgrades : MonoBehaviour
 
     public void BuyFoodUpgrade()
     {
-        UpgradesManager.Instance.CostInfo("Food", upgradeId);
         UpgradesManager.Instance.BuyUpgrade("Food", upgradeId);
+        UpgradesManager.Instance.CostInfo("Food", upgradeId);
     }
 
     public void BuyMilitaryUpgrade()
     {
-        UpgradesManager.Instance.CostInfo("Military", upgradeId);
         UpgradesManager.Instance.BuyUpgrade("Military", upgradeId);
+        UpgradesManager.Instance.CostInfo("Military", upgradeId);
     }
 
     public void BuyLandUpgrade()
     {
-        UpgradesManager.Instance.CostInfo("Land", upgradeId);
         UpgradesManager.Instance.BuyUpgrade("Land", upgradeId);
+        UpgradesManager.Instance.CostInfo("Land", upgradeId);
     }
 
     public void BuyMaterialUpgrade()
     {
-        UpgradesManager.Instance.CostInfo("Material", upgradeId);
         UpgradesManager.Instance.BuyUpgrade("Material", upgradeId);
+        UpgradesManager.Instance.CostInfo("Material", upgradeId);
     }
 }

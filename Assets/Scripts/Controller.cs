@@ -11,8 +11,10 @@ public class Controller : MonoBehaviour
     private const string dataFileName = "PlayerData";
 
     public Data data;
+    [Header("Value Texts")]
     [SerializeField] private TextMeshProUGUI[] sectionText;
-    public AudioSource clickSound;
+    [SerializeField] private TextMeshProUGUI humanText;
+    //public AudioSource clickSound;
 
     private void Awake()
     {
@@ -37,7 +39,7 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateSectionText();
+        UpdateText();
         //productionText.text = $"{ProductionPerSecond().Notate()}/s";
         //data.amounts[1] += ProductionPerSecond() * Time.deltaTime;
 
@@ -90,12 +92,13 @@ public class Controller : MonoBehaviour
 
     }
 
-    private void UpdateSectionText()
+    private void UpdateText()
     {
         sectionText[0].text = $"Yiyecek\n{data.sectionAmounts[0].Notate()}";
         sectionText[1].text = $"Askeri\n{data.sectionAmounts[1].Notate()}";
         sectionText[2].text = $"Toprak\n{data.sectionAmounts[2].Notate()}";
         sectionText[3].text = $"Materyal\n{data.sectionAmounts[3].Notate()}";
+        humanText.text = $"{data.humanAmount.Notate()}";
     }
 }
 //private void PhoneClick()

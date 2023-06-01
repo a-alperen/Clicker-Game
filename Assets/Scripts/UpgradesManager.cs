@@ -13,6 +13,10 @@ public class UpgradesManager : MonoBehaviour
     public static UpgradesManager Instance { get; private set; }
 
     public NewUpgradeHandler[] newUpgradeHandlers;
+
+    [Header("Requirement Panel Stuff")]
+    public TextMeshProUGUI upgradeNameText;
+    public GameObject upgradeNamePanel;
     public GameObject[] upgradeCostTexts;
     public Image[] upgradeCostImages;
     public Sprite[] upgradeCostSprites;
@@ -43,10 +47,10 @@ public class UpgradesManager : MonoBehaviour
     //}
     public void StartUpgradeManager()
     {
-        Methods.CheckList(Controller.Instance.data.FoodLevels, 8);
-        Methods.CheckList(Controller.Instance.data.MilitaryLevels, 10);
-        Methods.CheckList(Controller.Instance.data.LandLevels, 10);
-        Methods.CheckList(Controller.Instance.data.MaterialLevels, 9);
+        Methods.CheckList(Controller.Instance.data.Levels[0], 8);
+        Methods.CheckList(Controller.Instance.data.Levels[1], 10);
+        Methods.CheckList(Controller.Instance.data.Levels[2], 10);
+        Methods.CheckList(Controller.Instance.data.Levels[3], 9);
 
         //Names of upgrades
         newUpgradeHandlers[0].UpgradesNames = new string[] { "Toplayıcı", "Avcı", "Çiftçi", "Topluluk", "Değirmen", "Traktör", "Biçerdöver", "Fabrika" };
@@ -106,10 +110,10 @@ public class UpgradesManager : MonoBehaviour
         newUpgradeHandlers[2].UpgradesBasePower = new BigDouble[] { 10, 2, 5, 10, 25, 100, 250, 500, 1000, 2500 };
         newUpgradeHandlers[3].UpgradesBasePower = new BigDouble[] { 10, 3, 10, 25, 50, 100, 250, 500, 1000 };
 
-        CreateUpgrades(Controller.Instance.data.FoodLevels, 0);
-        CreateUpgrades(Controller.Instance.data.MilitaryLevels, 1);
-        CreateUpgrades(Controller.Instance.data.LandLevels, 2);
-        CreateUpgrades(Controller.Instance.data.MaterialLevels, 3);
+        CreateUpgrades(Controller.Instance.data.Levels[0], 0);
+        CreateUpgrades(Controller.Instance.data.Levels[1], 1);
+        CreateUpgrades(Controller.Instance.data.Levels[2], 2);
+        CreateUpgrades(Controller.Instance.data.Levels[3], 3);
 
         void CreateUpgrades<T>(List<T> level, int index)
         {
@@ -144,23 +148,20 @@ public class UpgradesManager : MonoBehaviour
         switch (type)
         {
             case "Food":
-                UpdateAllUI(newUpgradeHandlers[0].Upgrades, Controller.Instance.data.FoodLevels, newUpgradeHandlers[0].UpgradesNames,0);
+                UpdateAllUI(newUpgradeHandlers[0].Upgrades, Controller.Instance.data.Levels[0], newUpgradeHandlers[0].UpgradesNames,0);
                 break;
             case "Military":
-                UpdateAllUI(newUpgradeHandlers[1].Upgrades, Controller.Instance.data.MilitaryLevels, newUpgradeHandlers[1].UpgradesNames, 1);
+                UpdateAllUI(newUpgradeHandlers[1].Upgrades, Controller.Instance.data.Levels[1], newUpgradeHandlers[1].UpgradesNames, 1);
                 break;
             case "Land":
-                UpdateAllUI(newUpgradeHandlers[2].Upgrades, Controller.Instance.data.LandLevels, newUpgradeHandlers[2].UpgradesNames, 2);
+                UpdateAllUI(newUpgradeHandlers[2].Upgrades, Controller.Instance.data.Levels[2], newUpgradeHandlers[2].UpgradesNames, 2);
                 break;
             case "Material":
-                UpdateAllUI(newUpgradeHandlers[3].Upgrades, Controller.Instance.data.MaterialLevels, newUpgradeHandlers[3].UpgradesNames, 3);
+                UpdateAllUI(newUpgradeHandlers[3].Upgrades, Controller.Instance.data.Levels[3], newUpgradeHandlers[3].UpgradesNames, 3);
                 break;
             default:
                 break;
         }
-
-        
-
 
         void UpdateAllUI<T>(List<Upgrades> upgrades, List<T> upgradeLevels, string[] upgradeNames,int index)
         {
@@ -184,42 +185,41 @@ public class UpgradesManager : MonoBehaviour
         switch (type)
         {
             case "Food":
-                Buy(Controller.Instance.data.FoodLevels);
+                Buy(Controller.Instance.data.Levels[0], 0);
                 break;
             case "Military":
-                Buy(Controller.Instance.data.MilitaryLevels);
+                Buy(Controller.Instance.data.Levels[1], 1);
                 break;
             case "Land":
-                Buy(Controller.Instance.data.LandLevels);
+                Buy(Controller.Instance.data.Levels[2], 2);
                 break;
             case "Material":
-                Buy(Controller.Instance.data.MaterialLevels);
+                Buy(Controller.Instance.data.Levels[3], 3);
                 break;
             default:
                 break;
         }
-        void Buy(List<BigDouble> upgrades)
+
+        void Buy(List<BigDouble> upgrades,int index)
         {
             var data = Controller.Instance.data;
+            var upgradeCost = UpgradeCost(type, upgradeId);
             if (CanAfford(UpgradeCost(type,upgradeId), data.sectionAmounts, upgrades))
             {
-                var upgradeCost = UpgradeCost(type,upgradeId);
                 upgrades[upgradeId] += 1;
-                if (upgradeId > 0) upgrades[upgradeId - 1] -= upgradeCost[4];
                 data.sectionAmounts[0] -= upgradeCost[0];
                 data.sectionAmounts[1] -= upgradeCost[1];
                 data.sectionAmounts[2] -= upgradeCost[2];
                 data.sectionAmounts[3] -= upgradeCost[3];
-                data.humanAmount -= upgradeCost[5];
+                data.humanAmount -= upgradeCost[4];
+                data.Levels[index][upgradeId - 1 < 0 ? 0 : upgradeId - 1] -= upgradeCost[5];
             }
-            UpdateUpgradeUI(type, upgradeId);
+            UpdateUpgradeUI(type);
         }
-        bool isBuyable;
-        bool CanAfford(List<BigDouble> upgradeCost, BigDouble[] amounts, List<BigDouble> upgrades)
+        
+        bool CanAfford(List<BigDouble> upgradeCost, BigDouble[] amounts, List<BigDouble> upgrades) // Mevcut kaynakların geliştirme için yeterli olup olmadığını kontrol eder.
         {
-            if (Controller.Instance.data.humanAmount >= upgradeCost[5] && upgrades[upgradeId - 1 < 0 ? 0 : upgradeId - 1] >= upgradeCost[4] ) isBuyable = true;
-            else isBuyable = false;
-            
+            bool isBuyable = false;
             for (int i = 0; i < amounts.Length; i++)
             {
                 if (amounts[i] >= upgradeCost[i]) isBuyable = true;
@@ -229,8 +229,9 @@ public class UpgradesManager : MonoBehaviour
                     break;
                 }
             }
-            
-            return isBuyable;
+            if (Controller.Instance.data.humanAmount >= upgradeCost[4] && upgrades[upgradeId - 1 < 0 ? 0 : upgradeId - 1] >= upgradeCost[5] && isBuyable) return true;
+            else return false;
+
         }
     }
     public void CostInfo( string type, int upgradeId)
@@ -238,23 +239,25 @@ public class UpgradesManager : MonoBehaviour
         switch (type)
         {
             case "Food":
-                Cost(newUpgradeHandlers[0].UpgradesCost[upgradeId]);
+                Cost(newUpgradeHandlers[0].UpgradesCost[upgradeId], 0);
                 break;
             case "Military":
-                Cost(newUpgradeHandlers[1].UpgradesCost[upgradeId]);
+                Cost(newUpgradeHandlers[1].UpgradesCost[upgradeId], 1);
                 break;
             case "Land":
-                Cost(newUpgradeHandlers[2].UpgradesCost[upgradeId]);
+                Cost(newUpgradeHandlers[2].UpgradesCost[upgradeId], 2);
                 break;
             case "Material":
-                Cost(newUpgradeHandlers[3].UpgradesCost[upgradeId]);
+                Cost(newUpgradeHandlers[3].UpgradesCost[upgradeId], 3);
                 break;
             default:
                 break;
         }
 
-        void Cost(List<BigDouble> upgradesCost)
+        void Cost(List<BigDouble> upgradesCost, int index)
         {
+            upgradeNameText.text = $"{newUpgradeHandlers[index].UpgradesNames[upgradeId]}";
+            upgradeNamePanel.SetActive(true);
             for (int i =0; i< upgradeCostTexts.Length;i++) upgradeCostTexts[i].SetActive(false);
             for (int i = 0; i < upgradeCostSprites.Length; i++) upgradeCostImages[i].sprite = upgradeCostSprites[i];
             
@@ -269,11 +272,13 @@ public class UpgradesManager : MonoBehaviour
             }
             for (int j = 0; j < Controller.Instance.data.sectionAmounts.Length; j++)
             {
-                if (Controller.Instance.data.sectionAmounts[j] >= upgradesCost[j]) upgradeCostTexts[j].GetComponent<TextMeshProUGUI>().color = Color.yellow;
+                if (Controller.Instance.data.sectionAmounts[j] >= upgradesCost[j]) upgradeCostTexts[j].GetComponent<TextMeshProUGUI>().color = Color.green;
                 else upgradeCostTexts[j].GetComponent<TextMeshProUGUI>().color = Color.red;
             }
-            if(Controller.Instance.data.humanAmount >= upgradesCost[4]) upgradeCostTexts[4].GetComponent<TextMeshProUGUI>().color = Color.yellow;
+            if(Controller.Instance.data.humanAmount >= upgradesCost[4]) upgradeCostTexts[4].GetComponent<TextMeshProUGUI>().color = Color.green;
             else upgradeCostTexts[4].GetComponent<TextMeshProUGUI>().color = Color.red;
+            if (Controller.Instance.data.Levels[index][upgradeId - 1 < 0 ? 0 : upgradeId-1] >= upgradesCost[5]) upgradeCostTexts[5].GetComponent<TextMeshProUGUI>().color = Color.green;
+            else upgradeCostTexts[5].GetComponent<TextMeshProUGUI>().color = Color.red;
         }
     }
 }

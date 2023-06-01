@@ -30,16 +30,7 @@ public class PrestigeManager : MonoBehaviour
     }
     public void Prestige()
     {
-        var data = Controller.Instance.data;
-        data.sectionAmounts[0] += PrestigeGains();
-
-        data.sectionAmounts[1] = 0;
-        data.sectionAmounts[2] = 0;
-        data.sectionAmounts[3] = 0;
-        data.sectionAmounts[4] = 0;
-
-        data.lockPanels = new bool[] { true, true, false, false, false, false };
-
+        
         TogglePrestigeConfirm();
     }
 }
