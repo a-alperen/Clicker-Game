@@ -40,8 +40,8 @@ public class Controller : MonoBehaviour
     void Update()
     {
         UpdateText();
-        //productionText.text = $"{ProductionPerSecond().Notate()}/s";
-        //data.amounts[1] += ProductionPerSecond() * Time.deltaTime;
+        ProduceHuman();
+        Production();
 
         SaveTime += Time.deltaTime * (1 / Time.timeScale);
 
@@ -69,7 +69,27 @@ public class Controller : MonoBehaviour
 
     //    return total;
     //}
+    public void Production()
+    {
+        Produce("Food",0);
+        Produce("Military", 1);
+        Produce("Land", 2);
+        Produce("Material", 3);
 
+        void Produce(string type, int index)
+        {
+            for (int i = 0; i < data.Levels[index].Count; i++)
+            {
+                if (i == 0) data.sectionAmounts[index] += data.Levels[index][i] * UpgradesManager.Instance.newUpgradeHandlers[index].UpgradesBasePower[i] * Time.deltaTime;
+                else data.Levels[index][i - 1] += data.Levels[index][i] * UpgradesManager.Instance.newUpgradeHandlers[index].UpgradesBasePower[i] * Time.deltaTime;
+            }
+            UpgradesManager.Instance.UpdateUpgradeUI(type);
+        }
+    }
+    public void ProduceHuman()
+    {
+        data.humanAmount += 1 * Time.deltaTime;
+    }
     public void Click(string amountName)
     {
         switch (amountName)
@@ -98,7 +118,7 @@ public class Controller : MonoBehaviour
         sectionText[1].text = $"Askeri\n{data.sectionAmounts[1].Notate()}";
         sectionText[2].text = $"Toprak\n{data.sectionAmounts[2].Notate()}";
         sectionText[3].text = $"Materyal\n{data.sectionAmounts[3].Notate()}";
-        humanText.text = $"{data.humanAmount.Notate()}";
+        humanText.text = $"{data.humanAmount.Notate(3,0)}";
     }
 }
 //private void PhoneClick()

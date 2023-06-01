@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class Upgrades : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class Upgrades : MonoBehaviour
     public TextMeshProUGUI nameText;
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI productionText;
+    public Slider slider;
+    public TextMeshProUGUI progressText;
 
     public void ShowFoodCostAmount() => UpgradesManager.Instance.CostInfo("Food", upgradeId);
     public void ShowMilitaryCostAmount() => UpgradesManager.Instance.CostInfo("Military", upgradeId);

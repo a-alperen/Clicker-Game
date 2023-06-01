@@ -20,6 +20,8 @@ public class UpgradesManager : MonoBehaviour
     public GameObject[] upgradeCostTexts;
     public Image[] upgradeCostImages;
     public Sprite[] upgradeCostSprites;
+
+    private string[] sectionNames;
     private void Awake()
     {
         Instance = this;
@@ -104,6 +106,7 @@ public class UpgradesManager : MonoBehaviour
             new List<BigDouble> { 75e31, 0, 75e32, 1e35 , 1e7, 1e7 },
             new List<BigDouble> { 1e38 , 0, 25e38, 25e41, 1e8, 1e8 }
         };
+        sectionNames = new string[] { "Yiyecek", "Askeri", "Toprak", "Materyal" };
 
         newUpgradeHandlers[0].UpgradesBasePower = new BigDouble[] { 10, 5, 10, 25, 50, 100, 250, 1000 };
         newUpgradeHandlers[1].UpgradesBasePower = new BigDouble[] { 10, 3, 5, 10, 25, 50, 100, 250, 1000, 2500 };
@@ -172,9 +175,9 @@ public class UpgradesManager : MonoBehaviour
 
             void UpdateUI(int id)
             {
-                upgrades[id].levelText.text = $"{upgradeLevels[id]}";
+                upgrades[id].levelText.text = $"{upgradeLevels[id]:F0}";
                 upgrades[id].nameText.text = upgradeNames[id];
-                upgrades[id].productionText.text = $"{newUpgradeHandlers[index].UpgradesBasePower[id]}";
+                upgrades[id].productionText.text = $"Üretim: {newUpgradeHandlers[index].UpgradesBasePower[id]} {(id - 1 < 0 ? sectionNames[index] : upgradeNames[id-1])}";
             }
 
         }
