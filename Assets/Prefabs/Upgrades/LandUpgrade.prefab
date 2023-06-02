@@ -742,7 +742,7 @@ MonoBehaviour:
   levelText: {fileID: 5625089156927135165}
   productionText: {fileID: 5682892014103067101}
   slider: {fileID: 5682892013036104520}
-  progressText: {fileID: 0}
+  progressText: {fileID: 7397726741911244979}
 --- !u!1 &5682892013930105195
 GameObject:
   m_ObjectHideFlags: 0

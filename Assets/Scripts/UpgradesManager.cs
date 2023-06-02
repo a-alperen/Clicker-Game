@@ -97,7 +97,7 @@ public class UpgradesManager : MonoBehaviour
         };
         newUpgradeHandlers[3].UpgradesCost = new List<List<BigDouble>> {
             new List<BigDouble> { 10   , 0, 10   , 25   , 1  , 0   },
-            new List<BigDouble> { 25e4 , 0, 5e5  , 5e6  , 1e1, 1e1 },
+            new List<BigDouble> { 25e4 , 0, 5e5  , 1e6  , 1e1, 1e1 },
             new List<BigDouble> { 5e7  , 0, 1e8  , 75e10, 1e2, 1e2 },
             new List<BigDouble> { 75e12, 0, 75e12, 1e15 , 1e3, 1e3 },
             new List<BigDouble> { 1e16 , 0, 25e16, 25e19, 1e4, 1e4 },
@@ -106,6 +106,11 @@ public class UpgradesManager : MonoBehaviour
             new List<BigDouble> { 75e31, 0, 75e32, 1e35 , 1e7, 1e7 },
             new List<BigDouble> { 1e38 , 0, 25e38, 25e41, 1e8, 1e8 }
         };
+        newUpgradeHandlers[0].UpgradesProductionSecond = new List<float> { 1f, 2f, 5f, 10f, 15f, 30f, 60f, 120f };
+        newUpgradeHandlers[1].UpgradesProductionSecond = new List<float> { 1f, 2f, 5f, 10f, 15f, 30f, 60f, 120f, 150f, 180f };
+        newUpgradeHandlers[2].UpgradesProductionSecond = new List<float> { 1f, 2f, 5f, 10f, 15f, 30f, 60f, 120f, 150f, 180f };
+        newUpgradeHandlers[3].UpgradesProductionSecond = new List<float> { 1f, 2f, 5f, 10f, 15f, 30f, 60f, 120f, 150f };
+
         sectionNames = new string[] { "Yiyecek", "Askeri", "Toprak", "Materyal" };
 
         newUpgradeHandlers[0].UpgradesBasePower = new BigDouble[] { 10, 5, 10, 25, 50, 100, 250, 1000 };
@@ -166,7 +171,7 @@ public class UpgradesManager : MonoBehaviour
                 break;
         }
 
-        void UpdateAllUI<T>(List<Upgrades> upgrades, List<T> upgradeLevels, string[] upgradeNames,int index)
+        void UpdateAllUI(List<Upgrades> upgrades, List<BigDouble> upgradeLevels, string[] upgradeNames,int index)
         {
             if (upgradeId == -1)
                 for (int i = 0; i < newUpgradeHandlers[index].Upgrades.Count; i++)
@@ -175,9 +180,10 @@ public class UpgradesManager : MonoBehaviour
 
             void UpdateUI(int id)
             {
-                upgrades[id].levelText.text = $"{upgradeLevels[id]:F0}";
+                upgrades[id].levelText.text = $"{upgradeLevels[id].Notate(3,1)}";
                 upgrades[id].nameText.text = upgradeNames[id];
                 upgrades[id].productionText.text = $"Üretim: {newUpgradeHandlers[index].UpgradesBasePower[id]} {(id - 1 < 0 ? sectionNames[index] : upgradeNames[id-1])}";
+                upgrades[id].progressText.text = $"{newUpgradeHandlers[index].UpgradesProductionSecond[id] - newUpgradeHandlers[index].Upgrades[id].slider.value:F1}s";
             }
 
         }

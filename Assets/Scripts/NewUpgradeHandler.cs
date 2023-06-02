@@ -14,5 +14,5 @@ public class NewUpgradeHandler : MonoBehaviour
     public string[] UpgradesNames;
     public List<List<BigDouble>> UpgradesCost;
     public BigDouble[] UpgradesBasePower;
-    public float[] UpgradesProductionSecond; 
+    public List<float> UpgradesProductionSecond;
 }

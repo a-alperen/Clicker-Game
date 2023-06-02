@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine.EventSystems;
 using BreakInfinity;
+using UnityEngine.UI;
 
 public class Controller : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class Controller : MonoBehaviour
     [Header("Value Texts")]
     [SerializeField] private TextMeshProUGUI[] sectionText;
     [SerializeField] private TextMeshProUGUI humanText;
+    [SerializeField] private Slider humanSlider;
     //public AudioSource clickSound;
 
     private void Awake()
@@ -71,6 +73,8 @@ public class Controller : MonoBehaviour
     //}
     public void Production()
     {
+        var upgradeHandler = UpgradesManager.Instance.newUpgradeHandlers;
+        
         Produce("Food",0);
         Produce("Military", 1);
         Produce("Land", 2);
@@ -80,15 +84,35 @@ public class Controller : MonoBehaviour
         {
             for (int i = 0; i < data.Levels[index].Count; i++)
             {
-                if (i == 0) data.sectionAmounts[index] += data.Levels[index][i] * UpgradesManager.Instance.newUpgradeHandlers[index].UpgradesBasePower[i] * Time.deltaTime;
-                else data.Levels[index][i - 1] += data.Levels[index][i] * UpgradesManager.Instance.newUpgradeHandlers[index].UpgradesBasePower[i] * Time.deltaTime;
+                upgradeHandler[index].Upgrades[i].slider.maxValue = upgradeHandler[index].UpgradesProductionSecond[i];
+                if (data.Levels[index][i] > 0)
+                {
+                    if (upgradeHandler[index].Upgrades[i].slider.value >= upgradeHandler[index].Upgrades[i].slider.maxValue)
+                    {
+                        if (i == 0) data.sectionAmounts[index] += data.Levels[index][i] * upgradeHandler[index].UpgradesBasePower[i];
+                        else data.Levels[index][i - 1] += data.Levels[index][i] * upgradeHandler[index].UpgradesBasePower[i];
+                        upgradeHandler[index].Upgrades[i].slider.value = 0;
+                        //upgradeHandler[index].Upgrades[i].progressText.text = $"{upgradeHandler[index].UpgradesProductionSecond[i]}s";
+                    }
+                    else
+                    {
+                        upgradeHandler[index].Upgrades[i].slider.value += 1 * Time.deltaTime;
+
+                    }
+                }
+                
             }
             UpgradesManager.Instance.UpdateUpgradeUI(type);
         }
     }
     public void ProduceHuman()
     {
-        data.humanAmount += 1 * Time.deltaTime;
+        humanSlider.value += 1 * Time.deltaTime;
+        if(humanSlider.value >= 1)
+        {
+            humanSlider.value = 0;
+            data.humanAmount += 1;
+        }    
     }
     public void Click(string amountName)
     {
