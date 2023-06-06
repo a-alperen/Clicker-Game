@@ -8,7 +8,7 @@ public class TabGroup : MonoBehaviour
 {
     public List<TabButton> tabButtons;
     public Sprite tabIdle;
-    public Sprite tabHover;
+    //public Sprite tabHover;
     public Sprite tabActive;
     public TabButton selectedTab;
     public List<GameObject> objectsToSwap;          // Panellerin tutuldugu degisken
@@ -21,11 +21,11 @@ public class TabGroup : MonoBehaviour
         tabButtons.Add(button);
     }
 
-    public void OnTabEnter(TabButton button)
-    {
-        ResetTabs();
-        button.background.sprite = tabHover;
-    }
+    //public void OnTabEnter(TabButton button)
+    //{
+    //    ResetTabs();
+    //    button.background.sprite = tabHover;
+    //}
 
     public void OnTabExit(TabButton button)
     {

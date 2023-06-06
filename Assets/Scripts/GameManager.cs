@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     [Header("Panels")]
-    public GameObject settingsPanel;
     public GameObject mainSettingsPanel;
     public GameObject soundPanel;
 
@@ -14,20 +11,18 @@ public class GameManager : MonoBehaviour
     {
         Application.targetFrameRate = 60;
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    public void ResetData()
     {
-        
+        Controller.Instance.data = new Data(); 
     }
-
-    public void ShowSettingsPanel()
+    public void ShowPanel(GameObject panel)
     {
-        settingsPanel.SetActive(true);
+        panel.SetActive(true);
     }
-    public void HideSettingsPanel()
+    public void HidePanel(GameObject panel)
     {
-        settingsPanel.SetActive(false);
+        panel.SetActive(false);
     }
     public void ShowSoundPanel()
     {
@@ -41,6 +36,7 @@ public class GameManager : MonoBehaviour
     }
     public void QuitGame()
     {
+        SaveSystem.SaveData(Controller.Instance.data, "PlayerData");
         Application.Quit();
     }
 }

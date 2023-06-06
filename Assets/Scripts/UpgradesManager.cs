@@ -15,6 +15,7 @@ public class UpgradesManager : MonoBehaviour
     public NewUpgradeHandler[] newUpgradeHandlers;
 
     [Header("Requirement Panel Stuff")]
+    [Space(3)]
     public TextMeshProUGUI upgradeNameText;
     public GameObject upgradeNamePanel;
     public GameObject[] upgradeCostTexts;
@@ -208,7 +209,7 @@ public class UpgradesManager : MonoBehaviour
             default:
                 break;
         }
-
+        // Geliştirme satın alma işlemi
         void Buy(List<BigDouble> upgrades,int index)
         {
             var data = Controller.Instance.data;
@@ -225,8 +226,8 @@ public class UpgradesManager : MonoBehaviour
             }
             UpdateUpgradeUI(type);
         }
-        
-        bool CanAfford(List<BigDouble> upgradeCost, BigDouble[] amounts, List<BigDouble> upgrades) // Mevcut kaynakların geliştirme için yeterli olup olmadığını kontrol eder.
+        // Mevcut kaynakların geliştirme için yeterli olup olmadığını kontrol eder.
+        bool CanAfford(List<BigDouble> upgradeCost, BigDouble[] amounts, List<BigDouble> upgrades) 
         {
             bool isBuyable = false;
             for (int i = 0; i < amounts.Length; i++)
@@ -243,6 +244,12 @@ public class UpgradesManager : MonoBehaviour
 
         }
     }
+
+    /// <summary>
+    /// Requirement Panelde geliştirme maliyetini gösterir.
+    /// </summary>
+    /// <param name="type">Maliyetin tipi</param>
+    /// <param name="upgradeId"></param>
     public void CostInfo( string type, int upgradeId)
     {
         switch (type)
