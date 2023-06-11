@@ -30,6 +30,11 @@ public class AchievementManager : MonoBehaviour
         achievementHandler[1].RequireAmount = new BigDouble[] { 1e10, 1e15, 1e20, 1e30, 1e40 };
         achievementHandler[2].RequireAmount = new BigDouble[] { 1e10, 1e15, 1e20, 1e30, 1e40 };
         achievementHandler[3].RequireAmount = new BigDouble[] { 1e10, 1e15, 1e20, 1e30, 1e40 };
+        // Başarım kazanımları
+        achievementHandler[0].RewardAmount = new int[] { 2, 3, 4, 5, 10 };
+        achievementHandler[1].RewardAmount = new int[] { 2, 3, 4, 5, 10 };
+        achievementHandler[2].RewardAmount = new int[] { 2, 3, 4, 5, 10 };
+        achievementHandler[3].RewardAmount = new int[] { 2, 3, 4, 5, 10 };
 
         CreateUpgrades(Controller.Instance.data.isAchieve[0], 0);
         CreateUpgrades(Controller.Instance.data.isAchieve[1], 1);
@@ -74,6 +79,7 @@ public class AchievementManager : MonoBehaviour
 
         void UpdateAllUI(List<Achievement> achievements, string[] upgradeNames, int index)
         {
+            var data = Controller.Instance.data;
             if (acheivementId == -1)
                 for (int i = 0; i < achievementHandler[index].Achievements.Count; i++)
                     UpdateUI(i);
@@ -83,13 +89,48 @@ public class AchievementManager : MonoBehaviour
             {
                 achievements[id].NameText.text = upgradeNames[id];
                 achievements[id].DescriptionText.text = achievementHandler[index].RewardDescription[id];
-                achievements[id].slider.value = (float)(Controller.Instance.data.sectionAmounts[index] / achievementHandler[index].RequireAmount[id]);
-                achievements[id].CurrentProgressText.text = $"{Controller.Instance.data.sectionAmounts[index].Notate(3,1)}/{achievementHandler[index].RequireAmount[id].Notate(3,0)}";
-                if (Controller.Instance.data.sectionAmounts[index] >= achievementHandler[index].RequireAmount[id]) achievements[id].CollectButton.interactable = true;
-                else achievements[id].CollectButton.interactable = false;
+                achievements[id].slider.value = (float)(data.sectionAmounts[index] / achievementHandler[index].RequireAmount[id]);
+                achievements[id].CurrentProgressText.text = 
+                    $"{(data.sectionAmounts[index] >= achievementHandler[index].RequireAmount[id] ? achievementHandler[index].RequireAmount[id] : data.sectionAmounts[index]).Notate(3,1)}" +
+                    $"/{achievementHandler[index].RequireAmount[id].Notate(3,0)}";
+                if (data.sectionAmounts[index] >= achievementHandler[index].RequireAmount[id] && !data.isAchieve[index][id])
+                {
+                    achievements[id].CollectButton.interactable = true;
+                }
+                else
+                {
+                    achievements[id].CollectButton.interactable = false;
+                    achievements[id].CollectButtonText.text = data.isAchieve[index][id] ? "TOPLANDI": "TOPLA";
+                }
             }
 
         }
     }
-    
+    public void CollectReward(string type,int achievementId)
+    {
+        var data = Controller.Instance.data;
+        switch (type)
+        {
+            case "Food":
+                Collect(0);
+                break;
+            case "Military":
+                Collect(1);
+                break;
+            case "Land":
+                Collect(2);
+                break;
+            case "Material":
+                Collect(3);
+                break;
+            default:
+                break;
+        }
+        void Collect(int index)
+        {
+            data.isAchieve[index][achievementId] = true;
+            data.productionMultiplier[index] *= achievementHandler[index].RewardAmount[achievementId];
+        }
+
+    }
 }

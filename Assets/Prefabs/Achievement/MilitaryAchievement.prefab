@@ -124,7 +124,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6423295016473692080}
         m_TargetAssemblyTypeName: Achievement, Assembly-CSharp
-        m_MethodName: CollectReward
+        m_MethodName: CollectMilitaryReward
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 5358362703507728648}
   - component: {fileID: 6423295016473692080}
   m_Layer: 5
-  m_Name: Achievement
+  m_Name: MilitaryAchievement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -23,6 +23,7 @@ public class UpgradesManager : MonoBehaviour
     public Sprite[] upgradeCostSprites;
 
     private string[] sectionNames;
+    private int[] buyMultiplierAmounts;
     private void Awake()
     {
         Instance = this;
@@ -50,6 +51,8 @@ public class UpgradesManager : MonoBehaviour
     //}
     public void StartUpgradeManager()
     {
+        buyMultiplierAmounts = new int[] { 1, 10, 25, 100 };
+
         Methods.CheckList(Controller.Instance.data.Levels[0], 8);
         Methods.CheckList(Controller.Instance.data.Levels[1], 10);
         Methods.CheckList(Controller.Instance.data.Levels[2], 10);
@@ -183,7 +186,9 @@ public class UpgradesManager : MonoBehaviour
             {
                 upgrades[id].levelText.text = $"{upgradeLevels[id].Notate(3,1)}";
                 upgrades[id].nameText.text = upgradeNames[id];
-                upgrades[id].productionText.text = $"Üretim: {newUpgradeHandlers[index].UpgradesBasePower[id]} {(id - 1 < 0 ? sectionNames[index] : upgradeNames[id-1])}";
+                upgrades[id].productionText.text = 
+                    $"Üretim: {(id == 0 ? newUpgradeHandlers[index].UpgradesBasePower[id] * Controller.Instance.data.productionMultiplier[index] : newUpgradeHandlers[index].UpgradesBasePower[id])} " +
+                    $"{(id - 1 < 0 ? sectionNames[index] : upgradeNames[id-1])}";
                 upgrades[id].progressText.text = $"{newUpgradeHandlers[index].UpgradesProductionSecond[id] - newUpgradeHandlers[index].Upgrades[id].slider.value:F1}s";
             }
 
@@ -214,32 +219,32 @@ public class UpgradesManager : MonoBehaviour
         {
             var data = Controller.Instance.data;
             var upgradeCost = UpgradeCost(type, upgradeId);
-            if (CanAfford(UpgradeCost(type,upgradeId), data.sectionAmounts, upgrades))
+            if (CanAfford(UpgradeCost(type,upgradeId), data.sectionAmounts, upgrades, buyMultiplierAmounts[data.notationBuyMultiplier]))
             {
-                upgrades[upgradeId] += 1;
-                data.sectionAmounts[0] -= upgradeCost[0];
-                data.sectionAmounts[1] -= upgradeCost[1];
-                data.sectionAmounts[2] -= upgradeCost[2];
-                data.sectionAmounts[3] -= upgradeCost[3];
-                data.humanAmount -= upgradeCost[4];
-                data.Levels[index][upgradeId - 1 < 0 ? 0 : upgradeId - 1] -= upgradeCost[5];
+                upgrades[upgradeId] += 1 * buyMultiplierAmounts[data.notationBuyMultiplier];
+                data.sectionAmounts[0] -= upgradeCost[0] * buyMultiplierAmounts[data.notationBuyMultiplier];
+                data.sectionAmounts[1] -= upgradeCost[1] * buyMultiplierAmounts[data.notationBuyMultiplier];
+                data.sectionAmounts[2] -= upgradeCost[2] * buyMultiplierAmounts[data.notationBuyMultiplier];
+                data.sectionAmounts[3] -= upgradeCost[3] * buyMultiplierAmounts[data.notationBuyMultiplier];
+                data.humanAmount -= upgradeCost[4] * buyMultiplierAmounts[data.notationBuyMultiplier];
+                data.Levels[index][upgradeId - 1 < 0 ? 0 : upgradeId - 1] -= upgradeCost[5] * buyMultiplierAmounts[data.notationBuyMultiplier];
             }
             UpdateUpgradeUI(type);
         }
         // Mevcut kaynakların geliştirme için yeterli olup olmadığını kontrol eder.
-        bool CanAfford(List<BigDouble> upgradeCost, BigDouble[] amounts, List<BigDouble> upgrades) 
+        bool CanAfford(List<BigDouble> upgradeCost, BigDouble[] amounts, List<BigDouble> upgrades,int multiplier) 
         {
             bool isBuyable = false;
             for (int i = 0; i < amounts.Length; i++)
             {
-                if (amounts[i] >= upgradeCost[i]) isBuyable = true;
+                if (amounts[i] >= upgradeCost[i] * multiplier) isBuyable = true;
                 else
                 {
                     isBuyable = false;
                     break;
                 }
             }
-            if (Controller.Instance.data.humanAmount >= upgradeCost[4] && upgrades[upgradeId - 1 < 0 ? 0 : upgradeId - 1] >= upgradeCost[5] && isBuyable) return true;
+            if (Controller.Instance.data.humanAmount >= upgradeCost[4] * multiplier && upgrades[upgradeId - 1 < 0 ? 0 : upgradeId - 1] >= upgradeCost[5] * multiplier && isBuyable) return true;
             else return false;
 
         }
@@ -272,9 +277,10 @@ public class UpgradesManager : MonoBehaviour
 
         void Cost(List<BigDouble> upgradesCost, int index)
         {
+            int notation = Controller.Instance.data.notationBuyMultiplier;
             upgradeNameText.text = $"{newUpgradeHandlers[index].UpgradesNames[upgradeId]}";
             upgradeNamePanel.SetActive(true);
-            for (int i =0; i< upgradeCostTexts.Length;i++) upgradeCostTexts[i].SetActive(false);
+            for (int i = 0; i < upgradeCostTexts.Length; i++) upgradeCostTexts[i].SetActive(false);
             for (int i = 0; i < upgradeCostSprites.Length; i++) upgradeCostImages[i].sprite = upgradeCostSprites[i];
             
             for(int i = 0;i < upgradesCost.Count;i++)
@@ -282,18 +288,18 @@ public class UpgradesManager : MonoBehaviour
                 if (upgradesCost[i] != 0)
                 {
                     upgradeCostTexts[i].SetActive(true);
-                    upgradeCostTexts[i].GetComponent<TextMeshProUGUI>().text = $"{upgradesCost[i].Notate()}";
+                    upgradeCostTexts[i].GetComponent<TextMeshProUGUI>().text = $"{(upgradesCost[i] * buyMultiplierAmounts[notation]).Notate()}";
                     
                 }
             }
             for (int j = 0; j < Controller.Instance.data.sectionAmounts.Length; j++)
             {
-                if (Controller.Instance.data.sectionAmounts[j] >= upgradesCost[j]) upgradeCostTexts[j].GetComponent<TextMeshProUGUI>().color = Color.green;
+                if (Controller.Instance.data.sectionAmounts[j] >= upgradesCost[j] * buyMultiplierAmounts[notation]) upgradeCostTexts[j].GetComponent<TextMeshProUGUI>().color = Color.green;
                 else upgradeCostTexts[j].GetComponent<TextMeshProUGUI>().color = Color.red;
             }
-            if(Controller.Instance.data.humanAmount >= upgradesCost[4]) upgradeCostTexts[4].GetComponent<TextMeshProUGUI>().color = Color.green;
+            if(Controller.Instance.data.humanAmount >= upgradesCost[4] * buyMultiplierAmounts[notation]) upgradeCostTexts[4].GetComponent<TextMeshProUGUI>().color = Color.green;
             else upgradeCostTexts[4].GetComponent<TextMeshProUGUI>().color = Color.red;
-            if (Controller.Instance.data.Levels[index][upgradeId - 1 < 0 ? 0 : upgradeId-1] >= upgradesCost[5]) upgradeCostTexts[5].GetComponent<TextMeshProUGUI>().color = Color.green;
+            if (Controller.Instance.data.Levels[index][upgradeId - 1 < 0 ? 0 : upgradeId-1] >= upgradesCost[5] * buyMultiplierAmounts[notation]) upgradeCostTexts[5].GetComponent<TextMeshProUGUI>().color = Color.green;
             else upgradeCostTexts[5].GetComponent<TextMeshProUGUI>().color = Color.red;
         }
     }

@@ -91,7 +91,7 @@ public class Controller : MonoBehaviour
             {
                 for (int k = 0; k < data.Levels[j].Count; k++)
                 {
-                    if (k == 0) offlineProduction[j] += data.Levels[j][k] * upgradeHandler[j].UpgradesBasePower[k];
+                    if (k == 0) offlineProduction[j] += data.Levels[j][k] * upgradeHandler[j].UpgradesBasePower[k] * data.productionMultiplier[j];
                     else data.Levels[j][k - 1] += data.Levels[j][k] * upgradeHandler[j].UpgradesBasePower[k] / upgradeHandler[j].UpgradesProductionSecond[k];
                 }
             }
@@ -132,7 +132,7 @@ public class Controller : MonoBehaviour
                 {
                     if (upgradeHandler[index].Upgrades[i].slider.value >= upgradeHandler[index].Upgrades[i].slider.maxValue)
                     {
-                        if (i == 0) data.sectionAmounts[index] += data.Levels[index][i] * upgradeHandler[index].UpgradesBasePower[i];
+                        if (i == 0) data.sectionAmounts[index] += data.Levels[index][i] * upgradeHandler[index].UpgradesBasePower[i] * data.productionMultiplier[index];
                         else data.Levels[index][i - 1] += data.Levels[index][i] * upgradeHandler[index].UpgradesBasePower[i];
                         upgradeHandler[index].Upgrades[i].slider.value = 0;
                     }
