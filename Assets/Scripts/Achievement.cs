@@ -10,7 +10,7 @@ public class Achievement : MonoBehaviour
     public TextMeshProUGUI DescriptionText;
     public TextMeshProUGUI CurrentProgressText;
     public Slider slider;
-    [SerializeField] private Button CollectButton;
+    public Button CollectButton;
     [SerializeField] private TextMeshProUGUI CollectButtonText;
 
     public void CollectReward()

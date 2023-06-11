@@ -3,6 +3,9 @@ using TMPro;
 using UnityEngine.EventSystems;
 using BreakInfinity;
 using UnityEngine.UI;
+using UnityEditor;
+using System;
+using System.Reflection;
 
 public class Controller : MonoBehaviour
 {
@@ -10,12 +13,18 @@ public class Controller : MonoBehaviour
     public static Controller Instance { get; private set; }
 
     private const string dataFileName = "PlayerData";
-
+    private TimeSpan offlineTime;
+    private int offlineSeconds;
+    private BigDouble[] offlineProduction = new BigDouble[] { 0, 0, 0, 0 };
+    private BigDouble offlineHumanProduction = 0;
     public Data data;
     [Header("Value Texts")]
     [SerializeField] private TextMeshProUGUI[] sectionText;
+    [SerializeField] private TextMeshProUGUI[] offlinePanelTexts;
+    [Header("Other Things")]
     [SerializeField] private TextMeshProUGUI humanText;
     [SerializeField] private Slider humanSlider;
+    [SerializeField] private GameObject offlineIncomePanel;
     //public AudioSource clickSound;
 
     private void Awake()
@@ -32,8 +41,10 @@ public class Controller : MonoBehaviour
 
         UpgradesManager.Instance.StartUpgradeManager();
         Settings.Instance.StartSettings();
+        AchievementManager.Instance.StartAchievementManager();
+        offlineIncomePanel.SetActive(true);
+        OfflineEarning();
 
-        
     }
 
     public float SaveTime;
@@ -41,9 +52,11 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         UpdateText();
         ProduceHuman();
         Production();
+        UpdateAchievements();
 
         SaveTime += Time.deltaTime * (1 / Time.timeScale);
 
@@ -52,30 +65,60 @@ public class Controller : MonoBehaviour
             SaveSystem.SaveData(data, dataFileName);
             SaveTime = 0;
         }
-        
+        data.lastOnlineTime = DateTime.Now;
     }
 
-    //public BigDouble ClickPower()
-    //{
-    //    BigDouble total = 1;
-    //    for (int i = 0; i < data.ClickUpgradeLevels.Count; i++)
-    //        total += UpgradesManager.Instance.upgradeHandlers[0].UpgradesBasePower[i] * data.ClickUpgradeLevels[i];
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            SaveSystem.SaveData(data, dataFileName);
+        }
+    }
+    private void OnApplicationQuit()
+    {
+        SaveSystem.SaveData(data, dataFileName);
+    }
+    private void OfflineEarning()
+    {
+        offlineTime = DateTime.Now - data.lastOnlineTime;
+        offlineSeconds = (int)offlineTime.TotalSeconds;
+        var upgradeHandler = UpgradesManager.Instance.newUpgradeHandlers;
         
-    //    return total;
-    //}
-    //public BigDouble ProductionPerSecond()
-    //{
-    //    BigDouble total = 0;
-    //    for (int i = 0; i < data.FirstAgeProductionUpgradeLevels.Count; i++)
-    //        total += UpgradesManager.Instance.upgradeHandlers[1].UpgradesBasePower[i] * data.FirstAgeProductionUpgradeLevels[i];
+        for (int i = 0; i < offlineSeconds; i++)
+        {
+            for (int j = 0; j < 4; j++)
+            {
+                for (int k = 0; k < data.Levels[j].Count; k++)
+                {
+                    if (k == 0) offlineProduction[j] += data.Levels[j][k] * upgradeHandler[j].UpgradesBasePower[k];
+                    else data.Levels[j][k - 1] += data.Levels[j][k] * upgradeHandler[j].UpgradesBasePower[k] / upgradeHandler[j].UpgradesProductionSecond[k];
+                }
+            }
+        }
+        offlineHumanProduction = 1 * offlineSeconds;
+        data.humanAmount += offlineHumanProduction;
 
-    //    return total;
-    //}
+        offlinePanelTexts[0].text = $"{offlineProduction[0].Notate(3, offlineProduction[0] >= 1e3 ? 2 : 0)}";
+        offlinePanelTexts[1].text = $"{offlineProduction[1].Notate(3, offlineProduction[1] >= 1e3 ? 2 : 0)}";
+        offlinePanelTexts[2].text = $"{offlineProduction[2].Notate(3, offlineProduction[2] >= 1e3 ? 2 : 0)}";
+        offlinePanelTexts[3].text = $"{offlineProduction[3].Notate(3, offlineProduction[3] >= 1e3 ? 2 : 0)}";
+        offlinePanelTexts[4].text = $"{offlineHumanProduction.Notate(3, offlineHumanProduction >= 1e3 ? 2 : 0)}";
+        
+    }
+    public void AddOfflineIncome(GameObject panel)
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            data.sectionAmounts[i] += offlineProduction[i];
+        }
+        panel.SetActive(false);
+    }
     public void Production()
     {
         var upgradeHandler = UpgradesManager.Instance.newUpgradeHandlers;
         
-        Produce("Food",0);
+        Produce("Food", 0);
         Produce("Military", 1);
         Produce("Land", 2);
         Produce("Material", 3);
@@ -92,7 +135,6 @@ public class Controller : MonoBehaviour
                         if (i == 0) data.sectionAmounts[index] += data.Levels[index][i] * upgradeHandler[index].UpgradesBasePower[i];
                         else data.Levels[index][i - 1] += data.Levels[index][i] * upgradeHandler[index].UpgradesBasePower[i];
                         upgradeHandler[index].Upgrades[i].slider.value = 0;
-                        //upgradeHandler[index].Upgrades[i].progressText.text = $"{upgradeHandler[index].UpgradesProductionSecond[i]}s";
                     }
                     else
                     {
@@ -142,7 +184,15 @@ public class Controller : MonoBehaviour
         sectionText[1].text = $"Askeri\n{data.sectionAmounts[1].Notate()}";
         sectionText[2].text = $"Toprak\n{data.sectionAmounts[2].Notate()}";
         sectionText[3].text = $"Materyal\n{data.sectionAmounts[3].Notate()}";
-        humanText.text = $"{data.humanAmount.Notate(3,0)}";
+        humanText.text = $"{data.humanAmount.Notate(3,data.humanAmount >= 1e3 ? 2:0)}";
+    }
+
+    private void UpdateAchievements()
+    {
+        AchievementManager.Instance.UpdateUpgradeUI("Food");
+        AchievementManager.Instance.UpdateUpgradeUI("Military");
+        AchievementManager.Instance.UpdateUpgradeUI("Land");
+        AchievementManager.Instance.UpdateUpgradeUI("Material");
     }
 }
 //private void PhoneClick()

@@ -64,25 +64,25 @@ public class UpgradesManager : MonoBehaviour
         // 0- Yiyecek 1- Askeri 2- Toprak 3- Materyal 4- İnsan sayısı 5- Önceki Geliştirme 
         newUpgradeHandlers[0].UpgradesCost = new List<List<BigDouble>> {
             new List<BigDouble> { 25    , 0, 10   , 0    , 1   , 0    }, //Toplayıcı 
-            new List<BigDouble> { 10e3  , 0, 1e3  , 1e3  , 10 , 100   }, // Avcı
+            new List<BigDouble> { 10e3  , 0, 1e3  , 1e3  , 10  , 100  }, // Avcı
             new List<BigDouble> { 1e6   , 0, 1e4  , 1e3  , 100 , 1e3  }, // Çiftçi
-            new List<BigDouble> { 1e9   , 0, 1e7  , 1e6  , 1e3, 1e4  }, // Topluluk
-            new List<BigDouble> { 1e15  , 0, 1e12 , 25e10, 1e5, 1e4  }, // Değirmen
-            new List<BigDouble> { 5e22  , 0, 1e19 , 5e18 , 1e7, 1e5  }, // Traktör
+            new List<BigDouble> { 1e9   , 0, 1e7  , 1e6  , 1e3 , 1e4  }, // Topluluk
+            new List<BigDouble> { 1e15  , 0, 1e12 , 25e10, 1e5 , 1e4  }, // Değirmen
+            new List<BigDouble> { 5e22  , 0, 1e19 , 5e18 , 1e7 , 1e5  }, // Traktör
             new List<BigDouble> { 1e30  , 0, 25e25, 5e21 , 1e10, 25e4 }, // Biçerdöver
-            new List<BigDouble> { 5e40  , 0, 75e36, 25e35, 1e15, 1e6 }  // Fabrika
+            new List<BigDouble> { 5e40  , 0, 75e36, 25e35, 1e15, 1e6  }  // Fabrika
         };
         newUpgradeHandlers[1].UpgradesCost = new List<List<BigDouble>> {
-            new List<BigDouble> { 50    , 100  , 0, 25   , 1   , 0   },
-            new List<BigDouble> { 1e3   , 25e3 , 0, 1e3  , 10  , 10  },
-            new List<BigDouble> { 25e4  , 1e6  , 0, 1e5  , 100, 5e1 },
-            new List<BigDouble> { 1e7   , 25e9 , 0, 25e6 , 1e3, 1e2 }, 
-            new List<BigDouble> { 5e10  , 1e14 , 0, 25e11, 1e4, 1e3 },
-            new List<BigDouble> { 25e15 , 25e19, 0, 1e17 , 1e5, 25e2 }, 
-            new List<BigDouble> { 75e21 , 1e25 , 0, 5e22 , 1e6, 1e4 }, 
-            new List<BigDouble> { 5e26  , 75e30, 0, 25e26, 1e7, 25e3 }, 
-            new List<BigDouble> { 1e32  , 25e35, 0, 1e33 , 1e8, 1e5 },
-            new List<BigDouble> { 25e37 , 1e41 , 0, 5e38 , 1e9, 1e6 }
+            new List<BigDouble> { 50    , 100  , 0, 25   , 1   , 0    },
+            new List<BigDouble> { 1e3   , 25e3 , 0, 1e3  , 10  , 10   },
+            new List<BigDouble> { 25e4  , 1e6  , 0, 1e5  , 100 , 5e1  },
+            new List<BigDouble> { 1e7   , 25e9 , 0, 25e6 , 1e3 , 1e2  }, 
+            new List<BigDouble> { 5e10  , 1e14 , 0, 25e11, 1e4 , 1e3  },
+            new List<BigDouble> { 25e15 , 25e19, 0, 1e17 , 1e5 , 25e2 }, 
+            new List<BigDouble> { 75e21 , 1e25 , 0, 5e22 , 1e6 , 1e4  }, 
+            new List<BigDouble> { 5e26  , 75e30, 0, 25e26, 1e7 , 25e3 }, 
+            new List<BigDouble> { 1e32  , 25e35, 0, 1e33 , 1e8 , 1e5  },
+            new List<BigDouble> { 25e37 , 1e41 , 0, 5e38 , 1e9 , 1e6  }
         };
         newUpgradeHandlers[2].UpgradesCost = new List<List<BigDouble>> {
             new List<BigDouble> { 50   , 0    , 100  , 10   , 1  , 0   },

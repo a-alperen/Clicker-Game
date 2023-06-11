@@ -14,5 +14,5 @@ public class AchievementHandler : MonoBehaviour
     public string[] AchievementNames;
     public string[] RewardDescription;
     public BigDouble[] RequireAmount;
-    public bool[] IsAchieve;
+
 }
