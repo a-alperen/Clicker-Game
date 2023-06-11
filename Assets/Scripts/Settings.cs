@@ -14,8 +14,8 @@ public class Settings : MonoBehaviour
     }
     public void StartSettings()
     {
-        notationNames = new string[] { "Standart", "Scientific","Engineering", "Log" };
-        buyMultiplierNames = new string[] { "x1","x10","x25","x100" };
+        notationNames = new string[] { "Standart", "Scientific", "Engineering", "Log" };
+        buyMultiplierNames = new string[] { "x1", "x10", "x25", "x100", "xMAX" };
         Methods.notation = Controller.Instance.data.notation;
         SyncSetting();
     }

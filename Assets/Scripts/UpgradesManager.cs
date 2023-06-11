@@ -219,20 +219,21 @@ public class UpgradesManager : MonoBehaviour
         {
             var data = Controller.Instance.data;
             var upgradeCost = UpgradeCost(type, upgradeId);
-            if (CanAfford(UpgradeCost(type,upgradeId), data.sectionAmounts, upgrades, buyMultiplierAmounts[data.notationBuyMultiplier]))
+            var multiplier = CalculateMultiplier(data.notationBuyMultiplier,index,upgradeId,type);
+            if (CanAfford(UpgradeCost(type,upgradeId), data.sectionAmounts, upgrades, multiplier))
             {
-                upgrades[upgradeId] += 1 * buyMultiplierAmounts[data.notationBuyMultiplier];
-                data.sectionAmounts[0] -= upgradeCost[0] * buyMultiplierAmounts[data.notationBuyMultiplier];
-                data.sectionAmounts[1] -= upgradeCost[1] * buyMultiplierAmounts[data.notationBuyMultiplier];
-                data.sectionAmounts[2] -= upgradeCost[2] * buyMultiplierAmounts[data.notationBuyMultiplier];
-                data.sectionAmounts[3] -= upgradeCost[3] * buyMultiplierAmounts[data.notationBuyMultiplier];
-                data.humanAmount -= upgradeCost[4] * buyMultiplierAmounts[data.notationBuyMultiplier];
-                data.Levels[index][upgradeId - 1 < 0 ? 0 : upgradeId - 1] -= upgradeCost[5] * buyMultiplierAmounts[data.notationBuyMultiplier];
+                upgrades[upgradeId] += 1 * multiplier;
+                data.sectionAmounts[0] -= upgradeCost[0] * multiplier;
+                data.sectionAmounts[1] -= upgradeCost[1] * multiplier;
+                data.sectionAmounts[2] -= upgradeCost[2] * multiplier;
+                data.sectionAmounts[3] -= upgradeCost[3] * multiplier;
+                data.humanAmount -= upgradeCost[4] * multiplier;
+                data.Levels[index][upgradeId - 1 < 0 ? 0 : upgradeId - 1] -= upgradeCost[5] * multiplier;
             }
             UpdateUpgradeUI(type);
         }
         // Mevcut kaynakların geliştirme için yeterli olup olmadığını kontrol eder.
-        bool CanAfford(List<BigDouble> upgradeCost, BigDouble[] amounts, List<BigDouble> upgrades,int multiplier) 
+        bool CanAfford(List<BigDouble> upgradeCost, BigDouble[] amounts, List<BigDouble> upgrades,BigDouble multiplier) 
         {
             bool isBuyable = false;
             for (int i = 0; i < amounts.Length; i++)
@@ -248,8 +249,46 @@ public class UpgradesManager : MonoBehaviour
             else return false;
 
         }
+        
     }
+    /// <summary>
+    /// Maksimum alınabilecek upgrade sayısını hesaplar.
+    /// </summary>
+    /// <param name="notation"></param>
+    /// <param name="index"></param>
+    /// <param name="upgradeId"></param>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    BigDouble CalculateMultiplier(int notation, int index, int upgradeId,string type)
+    {
+        var data = Controller.Instance.data;
+        return notation switch
+        {
+            0 => 1,
+            1 => 10,
+            2 => 25,
+            3 => 100,
+            4 => CalculateMax(UpgradeCost(type, upgradeId), data.sectionAmounts, data.humanAmount, data.Levels[index][upgradeId - 1 < 0 ? 0 : upgradeId - 1]),
+            _ => 1,
+        };
 
+        BigDouble CalculateMax(List<BigDouble> costs, BigDouble[] amounts, BigDouble humanCount, BigDouble level)
+        {
+            List<BigDouble> list = new();
+
+            if ((level / (costs[5] == 0 ? 1 : costs[5])).Floor() == 0) return 1; 
+            else list.Add((level / (costs[5] == 0 ? 1 : costs[5])).Floor());
+            if ((humanCount / costs[4]).Floor() == 0) return 1;
+            else list.Add((humanCount / costs[4]).Floor());
+            for (int i = 0; i < amounts.Length; i++)
+            {
+                if ((amounts[i] / costs[i]).Floor() == 0) return 1;
+                list.Add((amounts[i] / costs[i]).Floor());
+            }
+            
+            return list.Min();
+        }
+    }
     /// <summary>
     /// Requirement Panelde geliştirme maliyetini gösterir.
     /// </summary>
@@ -274,10 +313,10 @@ public class UpgradesManager : MonoBehaviour
             default:
                 break;
         }
-
+        
         void Cost(List<BigDouble> upgradesCost, int index)
         {
-            int notation = Controller.Instance.data.notationBuyMultiplier;
+            var multiplier = CalculateMultiplier(Controller.Instance.data.notationBuyMultiplier,index,upgradeId,type);
             upgradeNameText.text = $"{newUpgradeHandlers[index].UpgradesNames[upgradeId]}";
             upgradeNamePanel.SetActive(true);
             for (int i = 0; i < upgradeCostTexts.Length; i++) upgradeCostTexts[i].SetActive(false);
@@ -288,18 +327,18 @@ public class UpgradesManager : MonoBehaviour
                 if (upgradesCost[i] != 0)
                 {
                     upgradeCostTexts[i].SetActive(true);
-                    upgradeCostTexts[i].GetComponent<TextMeshProUGUI>().text = $"{(upgradesCost[i] * buyMultiplierAmounts[notation]).Notate()}";
+                    upgradeCostTexts[i].GetComponent<TextMeshProUGUI>().text = $"{(upgradesCost[i] * multiplier).Notate()}";
                     
                 }
             }
             for (int j = 0; j < Controller.Instance.data.sectionAmounts.Length; j++)
             {
-                if (Controller.Instance.data.sectionAmounts[j] >= upgradesCost[j] * buyMultiplierAmounts[notation]) upgradeCostTexts[j].GetComponent<TextMeshProUGUI>().color = Color.green;
+                if (Controller.Instance.data.sectionAmounts[j] >= upgradesCost[j] * multiplier) upgradeCostTexts[j].GetComponent<TextMeshProUGUI>().color = Color.green;
                 else upgradeCostTexts[j].GetComponent<TextMeshProUGUI>().color = Color.red;
             }
-            if(Controller.Instance.data.humanAmount >= upgradesCost[4] * buyMultiplierAmounts[notation]) upgradeCostTexts[4].GetComponent<TextMeshProUGUI>().color = Color.green;
+            if(Controller.Instance.data.humanAmount >= upgradesCost[4] * multiplier) upgradeCostTexts[4].GetComponent<TextMeshProUGUI>().color = Color.green;
             else upgradeCostTexts[4].GetComponent<TextMeshProUGUI>().color = Color.red;
-            if (Controller.Instance.data.Levels[index][upgradeId - 1 < 0 ? 0 : upgradeId-1] >= upgradesCost[5] * buyMultiplierAmounts[notation]) upgradeCostTexts[5].GetComponent<TextMeshProUGUI>().color = Color.green;
+            if (Controller.Instance.data.Levels[index][upgradeId - 1 < 0 ? 0 : upgradeId-1] >= upgradesCost[5] * multiplier) upgradeCostTexts[5].GetComponent<TextMeshProUGUI>().color = Color.green;
             else upgradeCostTexts[5].GetComponent<TextMeshProUGUI>().color = Color.red;
         }
     }
