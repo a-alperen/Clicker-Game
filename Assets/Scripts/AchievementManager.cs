@@ -88,7 +88,7 @@ public class AchievementManager : MonoBehaviour
             void UpdateUI(int id)
             {
                 achievements[id].NameText.text = upgradeNames[id];
-                achievements[id].DescriptionText.text = achievementHandler[index].RewardDescription[id];
+                achievements[id].DescriptionText.text = achievementHandler[index].RewardDescription[id] + $"\nx{(id + 1) * 2} İnsan Üretimi";
                 achievements[id].slider.value = (float)(data.sectionAmounts[index] / achievementHandler[index].RequireAmount[id]);
                 achievements[id].CurrentProgressText.text = 
                     $"{(data.sectionAmounts[index] >= achievementHandler[index].RequireAmount[id] ? achievementHandler[index].RequireAmount[id] : data.sectionAmounts[index]).Notate(3,1)}" +
@@ -130,6 +130,7 @@ public class AchievementManager : MonoBehaviour
         {
             data.isAchieve[index][achievementId] = true;
             data.productionMultiplier[index] *= achievementHandler[index].RewardAmount[achievementId];
+            data.humanPower *= (achievementId + 1) * 2;
         }
 
     }

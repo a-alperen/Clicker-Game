@@ -23,7 +23,6 @@ public class UpgradesManager : MonoBehaviour
     public Sprite[] upgradeCostSprites;
 
     private string[] sectionNames;
-    private int[] buyMultiplierAmounts;
     private void Awake()
     {
         Instance = this;
@@ -51,8 +50,7 @@ public class UpgradesManager : MonoBehaviour
     //}
     public void StartUpgradeManager()
     {
-        buyMultiplierAmounts = new int[] { 1, 10, 25, 100 };
-
+        
         Methods.CheckList(Controller.Instance.data.Levels[0], 8);
         Methods.CheckList(Controller.Instance.data.Levels[1], 10);
         Methods.CheckList(Controller.Instance.data.Levels[2], 10);
@@ -275,15 +273,19 @@ public class UpgradesManager : MonoBehaviour
         BigDouble CalculateMax(List<BigDouble> costs, BigDouble[] amounts, BigDouble humanCount, BigDouble level)
         {
             List<BigDouble> list = new();
+            
+            if ((humanCount / costs[4]).Floor() != 0) list.Add((humanCount / costs[4]).Floor());
+            else return 1;
+            if (costs[5] != 0)
+            {
+                if ((level / costs[5]).Floor() != 0) list.Add((level / costs[5]).Floor());
+                else return 1;
+            }
 
-            if ((level / (costs[5] == 0 ? 1 : costs[5])).Floor() == 0) return 1; 
-            else list.Add((level / (costs[5] == 0 ? 1 : costs[5])).Floor());
-            if ((humanCount / costs[4]).Floor() == 0) return 1;
-            else list.Add((humanCount / costs[4]).Floor());
             for (int i = 0; i < amounts.Length; i++)
             {
-                if ((amounts[i] / costs[i]).Floor() == 0) return 1;
-                list.Add((amounts[i] / costs[i]).Floor());
+                if ((amounts[i] / costs[i]).Floor() != 0) list.Add((amounts[i] / costs[i]).Floor());
+                else return 1;
             }
             
             return list.Min();
@@ -317,7 +319,7 @@ public class UpgradesManager : MonoBehaviour
         void Cost(List<BigDouble> upgradesCost, int index)
         {
             var multiplier = CalculateMultiplier(Controller.Instance.data.notationBuyMultiplier,index,upgradeId,type);
-            upgradeNameText.text = $"{newUpgradeHandlers[index].UpgradesNames[upgradeId]}";
+            upgradeNameText.text = $"{newUpgradeHandlers[index].UpgradesNames[upgradeId]} (x{CalculateMultiplier(Controller.Instance.data.notationBuyMultiplier,index,upgradeId,type).Notate()})";
             upgradeNamePanel.SetActive(true);
             for (int i = 0; i < upgradeCostTexts.Length; i++) upgradeCostTexts[i].SetActive(false);
             for (int i = 0; i < upgradeCostSprites.Length; i++) upgradeCostImages[i].sprite = upgradeCostSprites[i];

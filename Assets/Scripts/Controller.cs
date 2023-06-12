@@ -15,12 +15,13 @@ public class Controller : MonoBehaviour
     private const string dataFileName = "PlayerData";
     private TimeSpan offlineTime;
     private int offlineSeconds;
-    private BigDouble[] offlineProduction = new BigDouble[] { 0, 0, 0, 0 };
+    private BigDouble[] offlineProduction;
     private BigDouble offlineHumanProduction = 0;
     public Data data;
     [Header("Value Texts")]
     [SerializeField] private TextMeshProUGUI[] sectionText;
     [SerializeField] private TextMeshProUGUI[] offlinePanelTexts;
+    [SerializeField] private TextMeshProUGUI[] clickTexts;
     [Header("Other Things")]
     [SerializeField] private TextMeshProUGUI humanText;
     [SerializeField] private Slider humanSlider;
@@ -39,11 +40,13 @@ public class Controller : MonoBehaviour
                ? SaveSystem.LoadData<Data>(dataFileName)
                : new Data();
 
+        offlineProduction = new BigDouble[] { 0, 0, 0, 0 };
         UpgradesManager.Instance.StartUpgradeManager();
         Settings.Instance.StartSettings();
         AchievementManager.Instance.StartAchievementManager();
-        offlineIncomePanel.SetActive(true);
         OfflineEarning();
+        offlineIncomePanel.SetActive(true);
+        
 
     }
 
@@ -99,13 +102,17 @@ public class Controller : MonoBehaviour
         offlineHumanProduction = 1 * offlineSeconds;
         data.humanAmount += offlineHumanProduction;
 
-        offlinePanelTexts[0].text = $"{offlineProduction[0].Notate(3, offlineProduction[0] >= 1e3 ? 2 : 0)}";
-        offlinePanelTexts[1].text = $"{offlineProduction[1].Notate(3, offlineProduction[1] >= 1e3 ? 2 : 0)}";
-        offlinePanelTexts[2].text = $"{offlineProduction[2].Notate(3, offlineProduction[2] >= 1e3 ? 2 : 0)}";
-        offlinePanelTexts[3].text = $"{offlineProduction[3].Notate(3, offlineProduction[3] >= 1e3 ? 2 : 0)}";
-        offlinePanelTexts[4].text = $"{offlineHumanProduction.Notate(3, offlineHumanProduction >= 1e3 ? 2 : 0)}";
+        offlinePanelTexts[0].text = $"{offlineProduction[0].Notate()}";
+        offlinePanelTexts[1].text = $"{offlineProduction[1].Notate()}";
+        offlinePanelTexts[2].text = $"{offlineProduction[2].Notate()}";
+        offlinePanelTexts[3].text = $"{offlineProduction[3].Notate()}";
+        offlinePanelTexts[4].text = $"{offlineHumanProduction.Notate()}";
         
     }
+    /// <summary>
+    /// Çevrimdışı geliri dataya ekler.(Unity ara yüzünden çağrılıyor.)
+    /// </summary>
+    /// <param name="panel"></param>
     public void AddOfflineIncome(GameObject panel)
     {
         for (int i = 0; i < 4; i++)
@@ -114,7 +121,7 @@ public class Controller : MonoBehaviour
         }
         panel.SetActive(false);
     }
-    public void Production()
+    private void Production()
     {
         var upgradeHandler = UpgradesManager.Instance.newUpgradeHandlers;
         
@@ -147,13 +154,13 @@ public class Controller : MonoBehaviour
             UpgradesManager.Instance.UpdateUpgradeUI(type);
         }
     }
-    public void ProduceHuman()
+    private void ProduceHuman()
     {
         humanSlider.value += 1 * Time.deltaTime;
         if(humanSlider.value >= 1)
         {
             humanSlider.value = 0;
-            data.humanAmount += 1;
+            data.humanAmount += data.humanPower;
         }    
     }
     public void Click(string amountName)
@@ -161,16 +168,16 @@ public class Controller : MonoBehaviour
         switch (amountName)
         {
             case "Food":
-                data.sectionAmounts[0] += 1;
+                data.sectionAmounts[0] += data.clickPower[0] * data.productionMultiplier[0];
                 break;
             case "Military":
-                data.sectionAmounts[1] += 1;
+                data.sectionAmounts[1] += data.clickPower[1] * data.productionMultiplier[1];
                 break;
             case "Land":
-                data.sectionAmounts[2] += 1;
+                data.sectionAmounts[2] += data.clickPower[2] * data.productionMultiplier[2];
                 break;
             case "Material":
-                data.sectionAmounts[3] += 1;
+                data.sectionAmounts[3] += data.clickPower[3] * data.productionMultiplier[3];
                 break;
             default:
                 break;
@@ -184,7 +191,13 @@ public class Controller : MonoBehaviour
         sectionText[1].text = $"Askeri\n{data.sectionAmounts[1].Notate()}";
         sectionText[2].text = $"Toprak\n{data.sectionAmounts[2].Notate()}";
         sectionText[3].text = $"Materyal\n{data.sectionAmounts[3].Notate()}";
-        humanText.text = $"{data.humanAmount.Notate(3,data.humanAmount >= 1e3 ? 2:0)}";
+        sectionText[4].text = $"Altın\n{data.gold.Notate()}";
+        humanText.text = $"{data.humanAmount.Notate()}";
+        for (int i = 0; i < data.clickPower.Length; i++)
+        {
+            clickTexts[i].text = $"+{(data.clickPower[i] * data.productionMultiplier[i]).Notate(3, 2)}";
+        }
+        
     }
 
     private void UpdateAchievements()
