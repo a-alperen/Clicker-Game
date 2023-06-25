@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEditor;
 using System;
 using System.Reflection;
+using Unity.VisualScripting;
 
 public class Controller : MonoBehaviour
 {
@@ -99,9 +100,8 @@ public class Controller : MonoBehaviour
                 }
             }
         }
-        offlineHumanProduction = 1 * offlineSeconds;
-        data.humanAmount += offlineHumanProduction;
-
+        offlineHumanProduction = data.humanPower * Produce() * offlineSeconds;
+        
         offlinePanelTexts[0].text = $"{offlineProduction[0].Notate()}";
         offlinePanelTexts[1].text = $"{offlineProduction[1].Notate()}";
         offlinePanelTexts[2].text = $"{offlineProduction[2].Notate()}";
@@ -119,6 +119,7 @@ public class Controller : MonoBehaviour
         {
             data.sectionAmounts[i] += offlineProduction[i];
         }
+        data.humanAmount += offlineHumanProduction;
         panel.SetActive(false);
     }
     private void Production()
@@ -160,8 +161,19 @@ public class Controller : MonoBehaviour
         if(humanSlider.value >= 1)
         {
             humanSlider.value = 0;
-            data.humanAmount += data.humanPower;
-        }    
+            data.humanAmount += data.humanPower * Produce();
+        }
+        
+        
+    }
+    private BigDouble Produce()
+    {
+        BigDouble sum = 1;
+        for (int i = 0; i < data.humanUpgradeLevels.Count; i++)
+        {
+            sum += data.humanUpgradeLevels[i] * 5;
+        }
+        return sum;
     }
     public void Click(string amountName)
     {

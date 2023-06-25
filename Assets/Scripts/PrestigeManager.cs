@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 using BreakInfinity;
-using System.Linq;
+using UnityEngine.UI;
 
 public class PrestigeManager : MonoBehaviour
 {
@@ -9,13 +9,18 @@ public class PrestigeManager : MonoBehaviour
     
     [SerializeField] private GameObject prestigeConfirmationPanel;
     [SerializeField] private TextMeshProUGUI gainsText;
+
+    [Header("Human Upgrade UI Elements")]
+    [SerializeField] private TextMeshProUGUI[] humanUpgradeProgressTexts;
+    [SerializeField] private Slider[] humanUpgradeProgressSlider;
+    [SerializeField] private Button[] humanUpgradeButton;
     private void Awake()
     {
         Instance = this;
     }
     private void Update()
     {
-        
+        UpdateUI();
     }
     private BigDouble PrestigeGains()
     {
@@ -53,6 +58,34 @@ public class PrestigeManager : MonoBehaviour
                 data.Levels[i][j] = 0;
             }
         }
+        for (int i = 0; i < data.humanUpgradeLevels.Count; i++)
+        {
+            data.humanUpgradeLevels[i] = 0;
+            data.humanUpgradeRequires[i] = 1000;
+        }
         data.humanAmount = 0;
+    }
+    public void BuyHumanUpgrade(int id)
+    {
+        var data = Controller.Instance.data;
+        if (data.sectionAmounts[id] >= data.humanUpgradeRequires[id])
+        {
+            data.sectionAmounts[id] -= data.humanUpgradeRequires[id];
+            data.humanUpgradeLevels[id] += 1;
+            data.humanUpgradeRequires[id] *= 10;
+            humanUpgradeProgressSlider[id].value = 0;
+            humanUpgradeButton[id].interactable = false;
+        }
+    }
+    private void UpdateUI()
+    {
+        var data = Controller.Instance.data;
+        for (int i = 0; i < humanUpgradeProgressTexts.Length; i++)
+        {
+            humanUpgradeProgressTexts[i].text = $"{(data.sectionAmounts[i] >= data.humanUpgradeRequires[i] ? data.humanUpgradeRequires[i]: data.sectionAmounts[i]).Notate(3,1)} / {data.humanUpgradeRequires[i].Notate(3,0)}";
+            humanUpgradeProgressSlider[i].value = (float)(data.sectionAmounts[i] / data.humanUpgradeRequires[i]);
+            if(humanUpgradeProgressSlider[i].value == 1) humanUpgradeButton[i].interactable = true;
+            else humanUpgradeButton[i].interactable = false;
+        }
     }
 }
