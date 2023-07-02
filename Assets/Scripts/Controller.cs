@@ -23,6 +23,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private TextMeshProUGUI[] sectionText;
     [SerializeField] private TextMeshProUGUI[] offlinePanelTexts;
     [SerializeField] private TextMeshProUGUI[] clickTexts;
+    [SerializeField] private TextMeshProUGUI[] sectionProductionTexts;
     [Header("Other Things")]
     [SerializeField] private TextMeshProUGUI humanText;
     [SerializeField] private Slider humanSlider;
@@ -209,7 +210,10 @@ public class Controller : MonoBehaviour
         {
             clickTexts[i].text = $"+{(data.clickPower[i] * data.productionMultiplier[i]).Notate(3, 2)}";
         }
-        
+        for (int i = 0; i < UpgradesManager.Instance.newUpgradeHandlers.Length; i++)
+        {
+            sectionProductionTexts[i].text = $"Üretim: {(UpgradesManager.Instance.newUpgradeHandlers[i].UpgradesBasePower[0] * data.productionMultiplier[i] * data.Levels[i][0]).Notate(3,1)}/s";
+        }
     }
 
     private void UpdateAchievements()

@@ -18,6 +18,7 @@ public class Data
     public List<List<bool>> isAchieve;          // Başarımın açılıp açılmadığını tutar.
     public int[] productionMultiplier;          // Açılan başarımlardan kazanılan üretim çarpanları
     public BigDouble[] clickPower;              // Sektörlerdeki tıklama butonu üretim gücü
+    public BigDouble[] prestigeUpgradeLevels;   // Prestij sonrası sektör üretimini kalıcı olarak arttıran geliştirme seviyesini tutar.
     public int notation;                        // Sayısal gösterimin seçimi için değişken
     public int notationBuyMultiplier;           // Toplu satın alımının seçimi için değişken
     public Data()
@@ -27,6 +28,7 @@ public class Data
         humanUpgradeRequires = new List<BigDouble>() { 1e3, 1e3, 1e3, 1e3 };
         productionMultiplier = new int[] { 1, 1, 1, 1 };
         clickPower = new BigDouble[] { 1, 1, 1, 1 };
+        prestigeUpgradeLevels = new BigDouble[] { 0, 0, 0, 0 };
         Levels = new List<List<BigDouble>>()
         {
             new BigDouble[8].ToList(),

@@ -21,6 +21,11 @@ public class UpgradesManager : MonoBehaviour
     public GameObject[] upgradeCostTexts;
     public Image[] upgradeCostImages;
     public Sprite[] upgradeCostSprites;
+    [Header("Upgrade Images")]
+    public Sprite[] foodImages;
+    public Sprite[] militaryImages;
+    public Sprite[] landImages;
+    public Sprite[] materialImages;
 
     private string[] sectionNames;
     private void Awake()
@@ -56,11 +61,17 @@ public class UpgradesManager : MonoBehaviour
         Methods.CheckList(Controller.Instance.data.Levels[2], 10);
         Methods.CheckList(Controller.Instance.data.Levels[3], 9);
 
+        // Sprites of upgrades
+        newUpgradeHandlers[0].upgradeImages = foodImages;
+        newUpgradeHandlers[1].upgradeImages = militaryImages;
+        newUpgradeHandlers[2].upgradeImages = landImages;
+        newUpgradeHandlers[3].upgradeImages = materialImages;
+
         //Names of upgrades
-        newUpgradeHandlers[0].UpgradesNames = new string[] { "Toplayıcı", "Avcı", "Çiftçi", "Topluluk", "Değirmen", "Traktör", "Biçerdöver", "Fabrika" };
-        newUpgradeHandlers[1].UpgradesNames = new string[] { "Sopalı Adam", "Okçu Adam", "Süvari", "Piyade", "Top", "Tank", "Gemi", "Uçak", "Roket", "Uzay Gemisi" };
-        newUpgradeHandlers[2].UpgradesNames = new string[] { "Orman", "Tarla", "Mezra", "Şehir", "Eyalet", "Ülke", "Kıta", "Dünya", "Güneş Sistemi", "Galaksi" };
-        newUpgradeHandlers[3].UpgradesNames = new string[] { "Odun", "Taş", "Bakır", "Demir", "Kurşun", "Kömür", "Çelik", "Titanyum", "Elmas" };
+        newUpgradeHandlers[0].UpgradesNames = new string[] { "Toplayıcı", "Avcı", "Çiftçi", "Topluluk", "Değirmen", "Traktör", "Biçerdöver", "Silo" };
+        newUpgradeHandlers[1].UpgradesNames = new string[] { "Sopalı Adam", "Okçu Adam", "Süvari", "Piyade", "Top", "Tank", "Gemi", "Uçak", "Roket", "Uzay İstasyonu" };
+        newUpgradeHandlers[2].UpgradesNames = new string[] { "Orman", "Tarla", "Köy", "Şehir", "Eyalet", "Ülke", "Kıta", "Dünya", "Güneş Sistemi", "Galaksi" };
+        newUpgradeHandlers[3].UpgradesNames = new string[] { "Odun", "Taş", "Bakır", "Demir", "Gümüş", "Kömür", "Çelik", "Titanyum", "Elmas" };
 
         // 0- Yiyecek 1- Askeri 2- Toprak 3- Materyal 4- İnsan sayısı 5- Önceki Geliştirme 
         newUpgradeHandlers[0].UpgradesCost = new List<List<BigDouble>> {
@@ -141,7 +152,6 @@ public class UpgradesManager : MonoBehaviour
         UpdateUpgradeUI("Land");
         UpdateUpgradeUI("Material");
 
-        
     }
 
     public List<BigDouble> UpgradeCost(string type, int upgradeId) => type switch
@@ -158,7 +168,7 @@ public class UpgradesManager : MonoBehaviour
         switch (type)
         {
             case "Food":
-                UpdateAllUI(newUpgradeHandlers[0].Upgrades, Controller.Instance.data.Levels[0], newUpgradeHandlers[0].UpgradesNames,0);
+                UpdateAllUI(newUpgradeHandlers[0].Upgrades, Controller.Instance.data.Levels[0], newUpgradeHandlers[0].UpgradesNames, 0);
                 break;
             case "Military":
                 UpdateAllUI(newUpgradeHandlers[1].Upgrades, Controller.Instance.data.Levels[1], newUpgradeHandlers[1].UpgradesNames, 1);
@@ -182,10 +192,12 @@ public class UpgradesManager : MonoBehaviour
 
             void UpdateUI(int id)
             {
+                var data = Controller.Instance.data;
+                upgrades[id].upgradeImage.sprite = newUpgradeHandlers[index].upgradeImages[id];
                 upgrades[id].levelText.text = $"{upgradeLevels[id].Notate(3,1)}";
                 upgrades[id].nameText.text = upgradeNames[id];
                 upgrades[id].productionText.text = 
-                    $"Üretim: {(id == 0 ? newUpgradeHandlers[index].UpgradesBasePower[id] * Controller.Instance.data.productionMultiplier[index] : newUpgradeHandlers[index].UpgradesBasePower[id])} " +
+                    $"Üretim: {(id == 0 ? newUpgradeHandlers[index].UpgradesBasePower[id] * data.productionMultiplier[index] * BigDouble.Pow(1.25, data.prestigeUpgradeLevels[index]) : newUpgradeHandlers[index].UpgradesBasePower[id])} " +
                     $"{(id - 1 < 0 ? sectionNames[index] : upgradeNames[id-1])}";
                 upgrades[id].progressText.text = $"{newUpgradeHandlers[index].UpgradesProductionSecond[id] - newUpgradeHandlers[index].Upgrades[id].slider.value:F1}s";
             }

@@ -11,6 +11,7 @@ public class NewUpgradeHandler : MonoBehaviour
     public ScrollRect UpgradesScroll;
     public Transform ContentPanel;
 
+    public Sprite[] upgradeImages;
     public string[] UpgradesNames;
     public List<List<BigDouble>> UpgradesCost;
     public BigDouble[] UpgradesBasePower;

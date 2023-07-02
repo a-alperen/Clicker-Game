@@ -10,6 +10,7 @@ public class Upgrades : MonoBehaviour
     public TextMeshProUGUI productionText;
     public Slider slider;
     public TextMeshProUGUI progressText;
+    public Image upgradeImage;
 
     public void ShowFoodCostAmount() => UpgradesManager.Instance.CostInfo("Food", upgradeId);
     public void ShowMilitaryCostAmount() => UpgradesManager.Instance.CostInfo("Military", upgradeId);
