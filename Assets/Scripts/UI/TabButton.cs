@@ -31,6 +31,7 @@ public class TabButton : MonoBehaviour,IPointerClickHandler/*,IPointerEnterHandl
     public void Select()
     {
         onTabSelected?.Invoke();
+        
     }
 
     public void Deselect()

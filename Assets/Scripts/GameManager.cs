@@ -5,7 +5,6 @@ public class GameManager : MonoBehaviour
     [Header("Panels")]
     public GameObject mainSettingsPanel;
     public GameObject soundPanel;
-    public GameObject resetConfirmPanel;
     // Start is called before the first frame update
     void Start()
     {

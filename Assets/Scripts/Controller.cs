@@ -141,7 +141,7 @@ public class Controller : MonoBehaviour
                 {
                     if (upgradeHandler[index].Upgrades[i].slider.value >= upgradeHandler[index].Upgrades[i].slider.maxValue)
                     {
-                        if (i == 0) data.sectionAmounts[index] += data.Levels[index][i] * upgradeHandler[index].UpgradesBasePower[i] * data.productionMultiplier[index];
+                        if (i == 0) data.sectionAmounts[index] += data.Levels[index][i] * upgradeHandler[index].UpgradesBasePower[i] * data.productionMultiplier[index] * BigDouble.Pow(1.1, data.prestigeUpgradeLevels[index]);
                         else data.Levels[index][i - 1] += data.Levels[index][i] * upgradeHandler[index].UpgradesBasePower[i];
                         upgradeHandler[index].Upgrades[i].slider.value = 0;
                     }

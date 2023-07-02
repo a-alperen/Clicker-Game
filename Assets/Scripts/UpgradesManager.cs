@@ -85,7 +85,7 @@ public class UpgradesManager : MonoBehaviour
             new List<BigDouble> { 5e40  , 0, 75e36, 25e35, 1e15, 1e6  }  // Fabrika
         };
         newUpgradeHandlers[1].UpgradesCost = new List<List<BigDouble>> {
-            new List<BigDouble> { 50    , 100  , 0, 25   , 1   , 0    },
+            new List<BigDouble> { 25    , 25   , 0, 25   , 1   , 0    },
             new List<BigDouble> { 1e3   , 25e3 , 0, 1e3  , 10  , 10   },
             new List<BigDouble> { 25e4  , 1e6  , 0, 1e5  , 100 , 5e1  },
             new List<BigDouble> { 1e7   , 25e9 , 0, 25e6 , 1e3 , 1e2  }, 
@@ -97,7 +97,7 @@ public class UpgradesManager : MonoBehaviour
             new List<BigDouble> { 25e37 , 1e41 , 0, 5e38 , 1e9 , 1e6  }
         };
         newUpgradeHandlers[2].UpgradesCost = new List<List<BigDouble>> {
-            new List<BigDouble> { 50   , 0    , 100  , 10   , 1  , 0   },
+            new List<BigDouble> { 25   , 0    , 25   , 10   , 1  , 0   },
             new List<BigDouble> { 1e3  , 250  , 1e4  , 750  , 1e1, 25  },
             new List<BigDouble> { 1e5  , 1e5  , 25e5 , 1e4  , 1e2, 5e1 },
             new List<BigDouble> { 25e4 , 25e5 , 1e7  , 1e6  , 1e3, 1e2 },
@@ -110,7 +110,7 @@ public class UpgradesManager : MonoBehaviour
         };
         newUpgradeHandlers[3].UpgradesCost = new List<List<BigDouble>> {
             new List<BigDouble> { 10   , 0, 10   , 25   , 1  , 0   },
-            new List<BigDouble> { 25e4 , 0, 5e5  , 1e6  , 1e1, 1e1 },
+            new List<BigDouble> { 25e3 , 0, 5e4  , 1e5  , 1e1, 1e1 },
             new List<BigDouble> { 5e7  , 0, 1e8  , 75e10, 1e2, 1e2 },
             new List<BigDouble> { 75e12, 0, 75e12, 1e15 , 1e3, 1e3 },
             new List<BigDouble> { 1e16 , 0, 25e16, 25e19, 1e4, 1e4 },
@@ -197,7 +197,7 @@ public class UpgradesManager : MonoBehaviour
                 upgrades[id].levelText.text = $"{upgradeLevels[id].Notate(3,1)}";
                 upgrades[id].nameText.text = upgradeNames[id];
                 upgrades[id].productionText.text = 
-                    $"Üretim: {(id == 0 ? newUpgradeHandlers[index].UpgradesBasePower[id] * data.productionMultiplier[index] * BigDouble.Pow(1.25, data.prestigeUpgradeLevels[index]) : newUpgradeHandlers[index].UpgradesBasePower[id])} " +
+                    $"Üretim: {(id == 0 ? newUpgradeHandlers[index].UpgradesBasePower[id] * data.productionMultiplier[index] * BigDouble.Pow(1.1, data.prestigeUpgradeLevels[index]) : newUpgradeHandlers[index].UpgradesBasePower[id]).Notate(3,1)} " +
                     $"{(id - 1 < 0 ? sectionNames[index] : upgradeNames[id-1])}";
                 upgrades[id].progressText.text = $"{newUpgradeHandlers[index].UpgradesProductionSecond[id] - newUpgradeHandlers[index].Upgrades[id].slider.value:F1}s";
             }
@@ -335,6 +335,7 @@ public class UpgradesManager : MonoBehaviour
             upgradeNamePanel.SetActive(true);
             for (int i = 0; i < upgradeCostTexts.Length; i++) upgradeCostTexts[i].SetActive(false);
             for (int i = 0; i < upgradeCostSprites.Length; i++) upgradeCostImages[i].sprite = upgradeCostSprites[i];
+            upgradeCostImages[5].sprite = newUpgradeHandlers[index].upgradeImages[upgradeId - 1 < 0 ? 0 : upgradeId - 1];
             
             for(int i = 0;i < upgradesCost.Count;i++)
             {

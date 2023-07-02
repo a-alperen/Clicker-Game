@@ -29,8 +29,8 @@ public class PrestigeManager : MonoBehaviour
     }
     private void Start()
     {
-        prestigeUpgradeCosts = new BigDouble[] { 100, 100, 100, 100 };
-        prestigeUpgradeCostMultiplier = new BigDouble[] { 1.2f, 1.2f, 1.2f, 1.2f };
+        prestigeUpgradeCosts = new BigDouble[] { 1000, 1000, 1000, 1000 };
+        prestigeUpgradeCostMultiplier = new BigDouble[] { 2.5f, 2.5f, 2.5f, 2.5f };
     }
     private void Update()
     {
@@ -41,7 +41,7 @@ public class PrestigeManager : MonoBehaviour
         BigDouble gold = 0;
         for(int i = 0; i < Controller.Instance.data.sectionAmounts.Length; i++)
         {
-            gold += BigDouble.Sqrt(Controller.Instance.data.sectionAmounts[i] / (BigDouble)1000);
+            gold += BigDouble.Sqrt(Controller.Instance.data.sectionAmounts[i] / (BigDouble)10000);
         }
         return gold;
     }

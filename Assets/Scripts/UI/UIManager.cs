@@ -1,43 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] private Slider musicSlider, sfxSlider;
 
-    [SerializeField] private GameObject upgradesPanel;
-    [SerializeField] private Button upgradesPanelButton;
-
-    public Sprite buttonOpenImage;
-    public Sprite buttonCloseImage;
-
-    [SerializeField] private bool isShow;
-
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        musicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
+        sfxSlider.value = PlayerPrefs.GetFloat("SFXVolume");
     }
-
-    // Update is called once per frame
-    void Update()
+    public void ToggleMusic()
     {
-        
+        SoundManager.Instance.ToggleMusic();
     }
-
-    public void ShowUpgradePanel()
+    public void ToggleSFX()
     {
-        if (!isShow)
-        {
-            isShow = true;
-            upgradesPanel.GetComponent<Animator>().Play("UpgradesPanelOpen");
-            upgradesPanelButton.GetComponent<Image>().sprite = buttonCloseImage;
-        }
-        else
-        {
-            isShow = false;
-            upgradesPanel.GetComponent<Animator>().Play("UpgradesPanelClose");
-            upgradesPanelButton.GetComponent<Image>().sprite =buttonOpenImage;
-        }
+        SoundManager.Instance.ToggleSFX();
+    }
+    public void MusicVolume()
+    {
+        SoundManager.Instance.MusicVolume(musicSlider.value);
+    }
+    public void SFXVolume()
+    {
+        SoundManager.Instance.SFXVolume(sfxSlider.value);
     }
 }

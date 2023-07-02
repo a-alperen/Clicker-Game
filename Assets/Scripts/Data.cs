@@ -21,6 +21,7 @@ public class Data
     public BigDouble[] prestigeUpgradeLevels;   // Prestij sonrası sektör üretimini kalıcı olarak arttıran geliştirme seviyesini tutar.
     public int notation;                        // Sayısal gösterimin seçimi için değişken
     public int notationBuyMultiplier;           // Toplu satın alımının seçimi için değişken
+
     public Data()
     {
         sectionAmounts = new BigDouble[] { 0, 0, 0, 0 };
@@ -52,6 +53,7 @@ public class Data
         
         notation = 0;
         notationBuyMultiplier = 0;
+        
     }
 
 }
