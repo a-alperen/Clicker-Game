@@ -28,11 +28,11 @@ public class Controller : MonoBehaviour
     [SerializeField] private TextMeshProUGUI humanText;
     [SerializeField] private Slider humanSlider;
     [SerializeField] private GameObject offlineIncomePanel;
-    //public AudioSource clickSound;
 
     private void Awake()
     {
         Instance = this;
+        
     }
 
     // Start is called before the first frame update
@@ -47,9 +47,13 @@ public class Controller : MonoBehaviour
         Settings.Instance.StartSettings();
         AchievementManager.Instance.StartAchievementManager();
         OfflineEarning();
-        offlineIncomePanel.SetActive(true);
-        
 
+        if (PlayerPrefs.GetInt("Income") == 0)
+        {
+            offlineIncomePanel.SetActive(false);
+            PlayerPrefs.SetInt("Income", 1);
+        }
+        else offlineIncomePanel.SetActive(true);
     }
 
     public float SaveTime;
@@ -142,7 +146,7 @@ public class Controller : MonoBehaviour
                     if (upgradeHandler[index].Upgrades[i].slider.value >= upgradeHandler[index].Upgrades[i].slider.maxValue)
                     {
                         if (i == 0) data.sectionAmounts[index] += data.Levels[index][i] * upgradeHandler[index].UpgradesBasePower[i] * data.productionMultiplier[index] * BigDouble.Pow(1.1, data.prestigeUpgradeLevels[index]);
-                        else data.Levels[index][i - 1] += data.Levels[index][i] * upgradeHandler[index].UpgradesBasePower[i];
+                        else data.Levels[index][i - 1] += data.Levels[index][i] * upgradeHandler[index].UpgradesBasePower[i] * data.productionMultiplier[index] * BigDouble.Pow(1.1, data.prestigeUpgradeLevels[index]);
                         upgradeHandler[index].Upgrades[i].slider.value = 0;
                     }
                     else

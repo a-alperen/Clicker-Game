@@ -79,22 +79,22 @@ public class UpgradesManager : MonoBehaviour
             new List<BigDouble> { 10e3  , 0, 1e3  , 1e3  , 10  , 100  }, // Avcı
             new List<BigDouble> { 1e6   , 0, 1e4  , 1e3  , 100 , 1e3  }, // Çiftçi
             new List<BigDouble> { 1e9   , 0, 1e7  , 1e6  , 1e3 , 1e4  }, // Topluluk
-            new List<BigDouble> { 1e15  , 0, 1e12 , 25e10, 1e5 , 1e4  }, // Değirmen
-            new List<BigDouble> { 5e22  , 0, 1e19 , 5e18 , 1e7 , 1e5  }, // Traktör
-            new List<BigDouble> { 1e30  , 0, 25e25, 5e21 , 1e10, 25e4 }, // Biçerdöver
-            new List<BigDouble> { 5e40  , 0, 75e36, 25e35, 1e15, 1e6  }  // Fabrika
+            new List<BigDouble> { 1e15  , 0, 1e12 , 25e10, 1e4 , 2.5e3}, // Değirmen
+            new List<BigDouble> { 5e22  , 0, 1e19 , 5e18 , 5e4 , 1e5  }, // Traktör
+            new List<BigDouble> { 1e30  , 0, 25e25, 5e21 , 1e5 , 25e4 }, // Biçerdöver
+            new List<BigDouble> { 5e40  , 0, 75e36, 25e35, 1e6 , 1e6  }  // Silo
         };
         newUpgradeHandlers[1].UpgradesCost = new List<List<BigDouble>> {
             new List<BigDouble> { 25    , 25   , 0, 25   , 1   , 0    },
             new List<BigDouble> { 1e3   , 25e3 , 0, 1e3  , 10  , 10   },
             new List<BigDouble> { 25e4  , 1e6  , 0, 1e5  , 100 , 5e1  },
             new List<BigDouble> { 1e7   , 25e9 , 0, 25e6 , 1e3 , 1e2  }, 
-            new List<BigDouble> { 5e10  , 1e14 , 0, 25e11, 1e4 , 1e3  },
-            new List<BigDouble> { 25e15 , 25e19, 0, 1e17 , 1e5 , 25e2 }, 
-            new List<BigDouble> { 75e21 , 1e25 , 0, 5e22 , 1e6 , 1e4  }, 
-            new List<BigDouble> { 5e26  , 75e30, 0, 25e26, 1e7 , 25e3 }, 
-            new List<BigDouble> { 1e32  , 25e35, 0, 1e33 , 1e8 , 1e5  },
-            new List<BigDouble> { 25e37 , 1e41 , 0, 5e38 , 1e9 , 1e6  }
+            new List<BigDouble> { 5e10  , 1e14 , 0, 25e11, 1e4 , 2.5e2},
+            new List<BigDouble> { 25e15 , 25e19, 0, 1e17 , 5e4 , 1e3  }, 
+            new List<BigDouble> { 75e21 , 1e25 , 0, 5e22 , 1e5 , 5e3  }, 
+            new List<BigDouble> { 5e26  , 75e30, 0, 25e26, 5e5 , 1e4  }, 
+            new List<BigDouble> { 1e32  , 25e35, 0, 1e33 , 1e6 , 1e5  },
+            new List<BigDouble> { 25e37 , 1e41 , 0, 5e38 , 1e7 , 1e6  }
         };
         newUpgradeHandlers[2].UpgradesCost = new List<List<BigDouble>> {
             new List<BigDouble> { 25   , 0    , 25   , 10   , 1  , 0   },
@@ -102,22 +102,22 @@ public class UpgradesManager : MonoBehaviour
             new List<BigDouble> { 1e5  , 1e5  , 25e5 , 1e4  , 1e2, 5e1 },
             new List<BigDouble> { 25e4 , 25e5 , 1e7  , 1e6  , 1e3, 1e2 },
             new List<BigDouble> { 75e7 , 5e11 , 5e12 , 25e10, 1e4, 1e3 },
-            new List<BigDouble> { 1e15 , 1e16 , 1e18 , 5e16 , 1e5, 1e4 },
-            new List<BigDouble> { 5e21 , 75e22, 75e25, 1e21 , 1e6, 1e5 },
-            new List<BigDouble> { 25e25, 25e26, 1e29 , 75e25, 1e7, 1e6 },
-            new List<BigDouble> { 1e31 , 1e32 , 5e35 , 25e31, 1e8, 1e7 },
-            new List<BigDouble> { 75e36, 5e41 , 25e42, 1e38 , 1e9, 1e8 }
+            new List<BigDouble> { 1e15 , 1e16 , 1e18 , 5e16 , 1e5, 5e3 },
+            new List<BigDouble> { 5e21 , 75e22, 75e25, 1e21 , 5e5, 1e4 },
+            new List<BigDouble> { 25e25, 25e26, 1e29 , 75e25, 1e6, 5e4 },
+            new List<BigDouble> { 1e31 , 1e32 , 5e35 , 25e31, 5e6, 1e5 },
+            new List<BigDouble> { 75e36, 5e41 , 25e42, 1e38 , 1e7, 1e6 }
         };
         newUpgradeHandlers[3].UpgradesCost = new List<List<BigDouble>> {
             new List<BigDouble> { 10   , 0, 10   , 25   , 1  , 0   },
             new List<BigDouble> { 25e3 , 0, 5e4  , 1e5  , 1e1, 1e1 },
-            new List<BigDouble> { 5e7  , 0, 1e8  , 75e10, 1e2, 1e2 },
-            new List<BigDouble> { 75e12, 0, 75e12, 1e15 , 1e3, 1e3 },
-            new List<BigDouble> { 1e16 , 0, 25e16, 25e19, 1e4, 1e4 },
-            new List<BigDouble> { 25e20, 0, 5e21 , 5e24 , 1e5, 1e5 },
-            new List<BigDouble> { 5e26 , 0, 1e27 , 75e29, 1e6, 1e6 },
-            new List<BigDouble> { 75e31, 0, 75e32, 1e35 , 1e7, 1e7 },
-            new List<BigDouble> { 1e38 , 0, 25e38, 25e41, 1e8, 1e8 }
+            new List<BigDouble> { 5e7  , 0, 1e8  , 75e7 , 1e2, 1e2 },
+            new List<BigDouble> { 75e12, 0, 75e12, 1e11 , 1e3, 1e3 },
+            new List<BigDouble> { 1e16 , 0, 25e16, 25e16, 5e3, 5e3 },
+            new List<BigDouble> { 25e20, 0, 5e21 , 5e22 , 1e4, 1e4 },
+            new List<BigDouble> { 5e26 , 0, 1e27 , 75e28, 5e4, 5e4 },
+            new List<BigDouble> { 75e31, 0, 75e32, 1e34 , 1e5, 1e5 },
+            new List<BigDouble> { 1e38 , 0, 25e38, 25e41, 1e6, 1e6 }
         };
         newUpgradeHandlers[0].UpgradesProductionSecond = new List<float> { 1f, 2f, 5f, 10f, 15f, 30f, 60f, 120f };
         newUpgradeHandlers[1].UpgradesProductionSecond = new List<float> { 1f, 2f, 5f, 10f, 15f, 30f, 60f, 120f, 150f, 180f };
@@ -197,7 +197,7 @@ public class UpgradesManager : MonoBehaviour
                 upgrades[id].levelText.text = $"{upgradeLevels[id].Notate(3,1)}";
                 upgrades[id].nameText.text = upgradeNames[id];
                 upgrades[id].productionText.text = 
-                    $"Üretim: {(id == 0 ? newUpgradeHandlers[index].UpgradesBasePower[id] * data.productionMultiplier[index] * BigDouble.Pow(1.1, data.prestigeUpgradeLevels[index]) : newUpgradeHandlers[index].UpgradesBasePower[id]).Notate(3,1)} " +
+                    $"Üretim: {(id == 0 ? newUpgradeHandlers[index].UpgradesBasePower[id] * data.productionMultiplier[index] * BigDouble.Pow(1.1, data.prestigeUpgradeLevels[index]) : newUpgradeHandlers[index].UpgradesBasePower[id] * data.productionMultiplier[index] * BigDouble.Pow(1.1, data.prestigeUpgradeLevels[index])).Notate(3,1)} " +
                     $"{(id - 1 < 0 ? sectionNames[index] : upgradeNames[id-1])}";
                 upgrades[id].progressText.text = $"{newUpgradeHandlers[index].UpgradesProductionSecond[id] - newUpgradeHandlers[index].Upgrades[id].slider.value:F1}s";
             }
