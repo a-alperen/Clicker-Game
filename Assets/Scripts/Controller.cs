@@ -28,6 +28,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private TextMeshProUGUI humanText;
     [SerializeField] private Slider humanSlider;
     [SerializeField] private GameObject offlineIncomePanel;
+    [SerializeField] private Button finishButton;
 
     private void Awake()
     {
@@ -54,6 +55,7 @@ public class Controller : MonoBehaviour
             PlayerPrefs.SetInt("Income", 1);
         }
         else offlineIncomePanel.SetActive(true);
+        finishButton.interactable = false;
     }
 
     public float SaveTime;
@@ -74,11 +76,12 @@ public class Controller : MonoBehaviour
             SaveSystem.SaveData(data, dataFileName);
             SaveTime = 0;
         }
-        data.lastOnlineTime = DateTime.Now;
+        if(IsComplete()) finishButton.interactable = true;
     }
 
     private void OnApplicationPause(bool pause)
     {
+        data.lastOnlineTime = DateTime.Now;
         if (pause)
         {
             SaveSystem.SaveData(data, dataFileName);
@@ -86,6 +89,7 @@ public class Controller : MonoBehaviour
     }
     private void OnApplicationQuit()
     {
+        data.lastOnlineTime = DateTime.Now;
         SaveSystem.SaveData(data, dataFileName);
     }
     private void OfflineEarning()
@@ -227,56 +231,13 @@ public class Controller : MonoBehaviour
         AchievementManager.Instance.UpdateUpgradeUI("Land");
         AchievementManager.Instance.UpdateUpgradeUI("Material");
     }
+    public void FinishGame()
+    {
+
+    }
+    private bool IsComplete()
+    {
+        if (data.Levels[0][7] >= 10 && data.Levels[1][9] >= 10 && data.Levels[2][9] >= 10 && data.Levels[3][8] >= 10) return true;
+        else return false;
+    }
 }
-//private void PhoneClick()
-//{
-//    if (Input.touchCount > 0)
-//    {
-//        Touch touch = Input.GetTouch(0);
-
-//        if (touch.phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(0))
-//        {
-//            ShowClickText(false);
-//            data.amounts[1] += ClickPower();
-//            clickText.text = data.amounts[1].Notate();
-//            clickSound.Play();
-//        }
-//    }
-//}
-//if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
-//{
-//    ShowClickText(true);
-
-//    data.amounts[1] += ClickPower();
-//    clickText.text = data.amounts[1].Notate();
-//    clickSound.Play();
-//}
-//void ShowClickText(bool platform)
-//{
-//    Vector3 objPos = Camera.main.ScreenToWorldPoint(platform ? Input.mousePosition: Input.GetTouch(0).position);
-//    GameObject go = Instantiate(clickTextPrefab, objPos, Quaternion.identity);
-//    go.transform.SetParent(clickTextCanvas.transform, false);
-//    go.transform.position = Input.mousePosition;
-//}
-//void UnlockAges()
-//{
-//    if (data.amounts[1] >= data.lockRequires[0])
-//    {
-//        data.lockPanels[2] = true;
-//    }
-//    if (data.amounts[1] >= data.lockRequires[1])
-//    {
-//        data.lockPanels[3] = true;
-//    }
-//    if (data.amounts[2] >= data.lockRequires[2])
-//    {
-//        data.lockPanels[4] = true;
-//    }
-//    if (data.amounts[3] >= data.lockRequires[3])
-//    {
-//        data.lockPanels[5] = true;
-//    }
-//    //lockRequires = new BigDouble[] { 1000,5000000,1000000000, 999999999999999 };
-//    //amounts = new BigDouble[] { 0, 0, 0, 0, 0 }; // 0-diamond 1-Food 2-Gold 3-machine 4-chip
-
-//}

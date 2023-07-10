@@ -5,25 +5,30 @@ using UnityEngine.UI;
 public class TutorialManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] tutorialPanels;
-    [SerializeField] private GameObject[] arrows; 
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private GameObject tutorialPanel;
     [SerializeField] private TextMeshProUGUI buttonText;
+    [SerializeField] private Sprite tutorialSprite;
+    [SerializeField] private Sprite goldSectionSprite;
     private string[] tutorialPanelsDescription;
     int currentPanelIndex = 1;
-    // Start is called before the first frame update
+    
     void Start()
     {
         tutorialPanelsDescription = new string[] {
-            "BU KISIMDA OYUNDA SEKTÖRLER ARASI GEÇİŞ YAPARSIN.",
             "SEKTÖRLERİN OLDUĞU KISIM BURADA GÖZÜKÜR. GELİŞTİRMELER VE ÜRETİM BURADA YAPILIR.",
-            "BURADA GELİŞTİRMELERİN MALİYETİ GÖSTERİLİR.",
+            "BURADA BAŞLANGIÇTA KAYNAK ÜRETİMİ YAPACAĞIN BUTON VE HER SANİYE YAPTIĞIN ÜRETİMİN MİKTARI VAR.",
+            "BURADA SENİN İÇİN SÜREKLİ KAYNAK ÜRETİMİ YAPMANI SAĞLAYACAK OLAN SEKTÖR GELİŞTİRMELERİ VAR.",
+            "BURADA GELİŞTİRMELERİN MALİYETİ GÖSTERİLİR. SATIN ALMA MALİYETİNİ GÖRMEK İÇİN GELİŞTİRMENİN ÜZERİNE TIKLAMAN YETERLİ.",
             "ÜST KISIM İNSAN ÜRETİMİ, ALT KISIMDA ÜRETİMLE ELDE EDİLEN BAŞARIM,ÇOKLU ALIM BUTONU VE PRESTİJ BUTONU YER ALIR. PRESTİJ İLE HER SEFERİNDE GENEL ÜRETİM GÜCÜNDE ARTIŞ MEYDANA GELİR VE SÜREÇ SIFIRLANIR.",
+            "BU KISIMDA OYUNDA SEKTÖRLER ARASI GEÇİŞ YAPARSIN.",
+            "ALTIN SEKMESİNİN DİĞERLERİNDEN FARKI, BU KAYNAK PRESTİJ YAPILARAK ELDE EDİLİR VE BURADA YAPILAN ÜRETİM GELİŞTİRMELERİ KALICIDIR.",
+            "BU KISIMDA İNSAN ÜRETİMİNİN GELİŞTİRMESİ YAPILMAKTADIR. HER PRESJTİJ SONRASI BURASI SIFIRLANIR.",
+            "BU KISIMDA YİYECEK/ASKERİ/TOPRAK/MATERYAL SEKTÖRLERİNİN KALICI ÜRETİM GELİŞTİRMESİ YAPILMAKTADIR. PRESTİJ SONRASI BURASI SIFIRLANMAZ.",
+            
         };
         tutorialPanels[0].SetActive(true);
-        arrows[0].SetActive(true);
         descriptionText.text = tutorialPanelsDescription[0];
-        arrows[0].SetActive(true);
         if (PlayerPrefs.GetInt("Tutorial") == 1) tutorialPanel.SetActive(false);
         else tutorialPanel.SetActive(true);
     }
@@ -34,17 +39,29 @@ public class TutorialManager : MonoBehaviour
         {
             tutorialPanels[currentPanelIndex - 1].SetActive(false);
             tutorialPanels[currentPanelIndex].SetActive(true);
-            arrows[currentPanelIndex - 1].SetActive(false);
-            arrows[currentPanelIndex].SetActive(true);
             descriptionText.text = tutorialPanelsDescription[currentPanelIndex];
-
-            if (currentPanelIndex == 3) buttonText.text = "TAMAMDIR";
+            if (currentPanelIndex == 7) tutorialPanel.GetComponent<Image>().sprite = goldSectionSprite;
+            if (currentPanelIndex == tutorialPanels.Length - 1) buttonText.text = "TAMAMDIR";
+            currentPanelIndex += 1;
         }
         else
         {
             tutorialPanel.SetActive(false);
+            tutorialPanels[0].SetActive(true);
+            tutorialPanel.GetComponent<Image>().sprite = tutorialSprite;
+            for (int i = 1; i < tutorialPanels.Length; i++)
+            {
+                tutorialPanels[i].SetActive(false);
+            }
+            descriptionText.text = tutorialPanelsDescription[0];
+            currentPanelIndex = 1;
+            buttonText.text = "SONRAKİ";
             PlayerPrefs.SetInt("Tutorial", 1);
         }
-        currentPanelIndex += 1;
+        
+    }
+    public void ShowTutorial()
+    {
+        tutorialPanel.SetActive(true);
     }
 }
