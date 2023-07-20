@@ -32,27 +32,7 @@ public class UpgradesManager : MonoBehaviour
     {
         Instance = this;
     }
-    private void Update()
-    {
-        //UpgradeUnlockSystem(Controller.Instance.data.amounts[1], upgradeHandlers[0].UpgradesUnlock,0);
-        //UpgradeUnlockSystem(Controller.Instance.data.amounts[1], upgradeHandlers[1].UpgradesUnlock, 1);
-    }
-    //public void UpgradeUnlockSystem(BigDouble currency, BigDouble[] unlock, int index)
-    //{
-    //    for (var i = 0; i < upgradeHandlers[index].Upgrades.Count; i++)
-    //    {
-    //        if (!upgradeHandlers[index].Upgrades[i].gameObject.activeSelf) upgradeHandlers[index].Upgrades[i].gameObject.SetActive(currency >= unlock[i]);
-
-    //    }
-    //}
-    //public void UpgradeLockSystem(int index)
-    //{
-    //    for (var i = 0; i < upgradeHandlers[index].Upgrades.Count; i++)
-    //    {
-    //        if (upgradeHandlers[index].Upgrades[i].gameObject.activeSelf) upgradeHandlers[index].Upgrades[i].gameObject.SetActive(false);
-
-    //    }
-    //}
+    
     public void StartUpgradeManager()
     {
         
