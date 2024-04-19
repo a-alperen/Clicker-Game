@@ -265,7 +265,7 @@ public class UpgradesManager : MonoBehaviour
         BigDouble CalculateMax(List<BigDouble> costs, BigDouble[] amounts, BigDouble humanCount, BigDouble level)
         {
             List<BigDouble> list = new();
-            
+
             if ((humanCount / costs[4]).Floor() != 0) list.Add((humanCount / costs[4]).Floor());
             else return 1;
             if (costs[5] != 0)
